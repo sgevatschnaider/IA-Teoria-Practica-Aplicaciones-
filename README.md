@@ -92,10 +92,7 @@ Abre el notebook de tu interés y ejecuta los ejemplos interactivos.
 # Notebooks Interactivos  
 Puedes abrir y ejecutar los notebooks en Google Colab directamente desde aquí:  
 
----
-
 ## 📊 **Introducción a la materia**  
-
 
 | 📄 **Recurso** | 📥 **Acceso** |
 |--------------|------------|
@@ -108,6 +105,8 @@ Puedes abrir y ejecutar los notebooks en Google Colab directamente desde aquí:
 | **Preguntas y Respuestas sobre Sistemas de Recomendación** | [![📄 Descargar PDF](https://img.shields.io/badge/📄%20Descargar-Preguntas%20y%20Respuestas%20sobre%20Sistemas%20de%20Recomendación-red?style=for-the-badge)](https://github.com/sgevatschnaider/GraphAI-Data-Science-ML/blob/ed7eb3145a0f91d14dd5e450886e9f876d626ab2/Preguntas%20y%20Respuestas%20sobre%20Sistemas%20de%20Recomendaci%C3%B3n.pdf) |
 
 ---
+
+
 
 ## **Fragmentos de Código Ilustrativos**
 
