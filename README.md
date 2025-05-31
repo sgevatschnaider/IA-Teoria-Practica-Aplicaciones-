@@ -85,7 +85,18 @@ Esta animación ilustra la construcción progresiva de una Red Neuronal Artifici
 4.  **Iniciar Jupyter:** `jupyter lab` o `jupyter notebook`
 5.  **Google Colab:** Busca los badges [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](URL_NOTEBOOK) en las secciones de cada módulo.
 
+---
+
+## **Uso del Repositorio**  
+
+Para clonar el repositorio y ejecutar los notebooks:  
+
+```bash
+git clone https://github.com/sgevatschnaider/Grafos.git
+cd Grafos
+jupyter notebook
 ```
+
 
 Abre el notebook de tu interés y ejecuta los ejemplos interactivos.  
 
