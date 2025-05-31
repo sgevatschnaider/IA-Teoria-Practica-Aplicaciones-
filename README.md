@@ -16,18 +16,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 *   [Arquitectura del Repositorio](#arquitectura-del-repositorio)
 *   [Puesta en Marcha: Guía de Inicio Rápido](#puesta-en-marcha-guía-de-inicio-rápido)
 *   [Estructura Temática Detallada y Acceso a Módulos](#estructura-temática-detallada-y-acceso-a-módulos)
-    *   [Módulo 0: Cimientos y Herramientas Esenciales](#módulo-0-cimientos-y-herramientas-esenciales)
-    *   [Módulo 1: Introducción a la IA y Resolución de Problemas](#módulo-1-introducción-a-la-ia-y-resolución-de-problemas)
-    *   [Módulo 2: Fundamentos del Aprendizaje Automático](#módulo-2-fundamentos-del-aprendizaje-automático)
-    *   [Módulo 3: Aprendizaje Profundo (Deep Learning)](#módulo-3-aprendizaje-profundo-deep-learning)
-    *   [Módulo 4: Procesamiento del Lenguaje Natural (PLN)](#módulo-4-procesamiento-del-lenguaje-natural-pln)
-    *   [Módulo 5: Visión por Computadora](#módulo-5-visión-por-computadora)
-    *   [Módulo 6: Aprendizaje por Refuerzo](#módulo-6-aprendizaje-por-refuerzo)
-    *   [Módulo 7: IA Basada en Grafos y Ciencia de Redes](#módulo-7-ia-basada-en-grafos-y-ciencia-de-redes)
-    *   [Módulo 8: IA Generativa](#módulo-8-ia-generativa)
-    *   [Módulo 9: Ética, Gobernanza y IA Responsable](#módulo-9-ética-gobernanza-y-ia-responsable)
-    *   [Módulo 10: Tópicos Avanzados y Fronteras de la IA](#módulo-10-tópicos-avanzados-y-fronteras-de-la-ia)
-    *   [Módulo X: Proyectos Integradores](#módulo-x-proyectos-integradores)
+    
 *   [Fragmentos de Código Ilustrativos](#fragmentos-de-código-ilustrativos)
 *   [Arsenal de Recursos (Libros, Artículos, Cursos)](#arsenal-de-recursos-libros-artículos-cursos)
 *   [Directrices para el Aprendizaje Autónomo](#directrices-para-el-aprendizaje-autónomo)
@@ -83,7 +72,7 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 ### **Evolución de una Red Neuronal en IA**
 
 Esta animación ilustra la construcción progresiva de una Red Neuronal Artificial, mostrando cómo se añaden nodos y conexiones capa por capa, representando el crecimiento y la complejidad inherentes a los modelos de Inteligencia Artificial.
-![alt text](https://github.com/sgevatschnaider/IA-Teoria-Practica-Apli
+![Animación de la Evolución de una Red Neuronal Artificial](https://github.com/sgevatschnaider/IA-Teoria-Practica-Aplicaciones-/blob/895f1c99f0c5b872b42be5460920eb29e509ed21/neural_evolution_optimized.gif?raw=true)
 
 ## **Puesta en Marcha: Guía de Inicio Rápido**
 
