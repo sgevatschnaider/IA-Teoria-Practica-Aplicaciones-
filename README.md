@@ -102,6 +102,52 @@ Esta animación ilustra la construcción progresiva de una Red Neuronal Artifici
 
 ## **Fragmentos de Código Ilustrativos**
 
+¡Entendido! Aquí tienes la sección "Fragmentos de Código Ilustrativos" con dos ejemplos de IA comunes, formateados en Markdown. He elegido un ejemplo de clasificación con Scikit-learn y una red neuronal simple con PyTorch, ya que son representativos y fáciles de entender conceptualmente.
+
+---
+
+## **Fragmentos de Código Ilustrativos**
+
+A continuación, se presentan algunos ejemplos de código concisos que ilustran conceptos fundamentales de Inteligencia Artificial. El código completo y contextualizado se encuentra dentro de los notebooks de cada módulo.
+
+### **Ejemplo 1: Clasificación de Flores Iris con Scikit-learn (K-Nearest Neighbors)**
+
+Este ejemplo muestra un flujo de trabajo básico de aprendizaje supervisado: cargar datos, dividir en entrenamiento y prueba, entrenar un clasificador (KNN) y evaluar su precisión.
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+# 1. Cargar el conjunto de datos Iris
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 2. Dividir los datos en conjuntos de entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+
+# 3. Inicializar y entrenar el clasificador K-Nearest Neighbors
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train, y_train)
+
+# 4. Realizar predicciones sobre el conjunto de prueba
+y_pred = knn.predict(X_test)
+
+# 5. Evaluar la precisión del modelo
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Dataset: Iris Flowers")
+print(f"Clasificador: K-Nearest Neighbors (k=3)")
+print(f"Precisión en el conjunto de prueba: {accuracy:.4f}")
+# Salida esperada (puede variar ligeramente debido a la aleatoriedad del split):
+# Precisión en el conjunto de prueba: 0.9778 (o similar)
+```
+
+### **Ejemplo : Red Neuronal Simple para Regresión con PyTorch**
+
+Este fragmento define una red neuronal pequeña con una capa oculta para una tarea de regresión simple y muestra cómo realizar una pasada hacia adelante (forward pass).
+
+```python
 import torch
 import torch.nn as nn
 
@@ -119,8 +165,7 @@ class SimpleRegressionNN(nn.Module):
         out = self.fc2(out)
         return out
 
-## Fragmentos de Código Ilustrativos
-
+# 2. Instanciar el modelo
 # Supongamos 5 características de entrada, 10 neuronas ocultas, 1 salida (valor de regresión)
 input_dim = 5
 hidden_dim = 10
@@ -139,7 +184,11 @@ print(model)
 print(f"\nEntrada de ejemplo (shape): {sample_input.shape}")
 print(f"Predicciones del modelo (shape): {predictions.shape}")
 print(f"Predicciones:\n{predictions.data}")
+```
+*(Nota: Para entrenar este modelo de PyTorch, se necesitaría definir una función de pérdida, un optimizador y un bucle de entrenamiento.)*
+
 ---
+
 
 ## ** Visualizaciones y Diagramas Conceptuales**
 
