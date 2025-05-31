@@ -2,7 +2,7 @@
 
  ¡Bienvenido/a al repositorio central de conocimiento y práctica en **Inteligencia Artificial**! 
 
-Este espacio ha sido meticulosamente diseñado como un compendio exhaustivo para estudiantes, profesionales y entusiastas que buscan no solo comprender, sino **dominar los fundamentos, algoritmos, técnicas y aplicaciones de la IA**. Desde los pilares clásicos hasta las fronteras más innovadoras, este repositorio ofrece un viaje de aprendizaje estructurado, práctico y profundamente enriquecedor.
+Este espacio ha sido diseñado como un compendio exhaustivo para estudiantes, profesionales y entusiastas que buscan no solo comprender, sino **dominar los fundamentos, algoritmos, técnicas y aplicaciones de la IA**. Desde los pilares clásicos hasta las fronteras más innovadoras, este repositorio ofrece un viaje de aprendizaje estructurado, práctico y profundamente enriquecedor.
 
 Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**, **Aprendizaje Profundo**, **Procesamiento del Lenguaje Natural**, **Visión por Computadora**, **Aprendizaje por Refuerzo**, **IA Basada en Grafos**, **IA Generativa**, y la crucial **Ética en IA**.
 
