@@ -72,6 +72,7 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 ### **Evolución de una Red Neuronal en IA**
 
 Esta animación ilustra la construcción progresiva de una Red Neuronal Artificial, mostrando cómo se añaden nodos y conexiones capa por capa, representando el crecimiento y la complejidad inherentes a los modelos de Inteligencia Artificial.
+
 ![Animación de la Evolución de una Red Neuronal Artificial](https://github.com/sgevatschnaider/IA-Teoria-Practica-Aplicaciones-/blob/895f1c99f0c5b872b42be5460920eb29e509ed21/neural_evolution_optimized.gif?raw=true)
 
 ## **Puesta en Marcha: Guía de Inicio Rápido**
