@@ -102,8 +102,43 @@ Esta animación ilustra la construcción progresiva de una Red Neuronal Artifici
 
 ## **Fragmentos de Código Ilustrativos**
 
-*(Los ejemplos de la respuesta anterior son válidos aquí. Se omiten por brevedad, pero puedes incluirlos.)*
+import torch
+import torch.nn as nn
 
+# 1. Definir la arquitectura de la Red Neuronal
+class SimpleRegressionNN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(SimpleRegressionNN, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size) # Capa de entrada a oculta
+        self.relu = nn.ReLU()                         # Función de activación
+        self.fc2 = nn.Linear(hidden_size, output_size) # Capa oculta a salida
+
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.relu(out)
+        out = self.fc2(out)
+        return out
+
+## Fragmentos de Código Ilustrativos
+
+# Supongamos 5 características de entrada, 10 neuronas ocultas, 1 salida (valor de regresión)
+input_dim = 5
+hidden_dim = 10
+output_dim = 1
+model = SimpleRegressionNN(input_dim, hidden_dim, output_dim)
+
+# 3. Crear datos de entrada de ejemplo (un batch de 3 muestras)
+# Cada muestra tiene 'input_dim' características
+sample_input = torch.randn(3, input_dim) # Tensor de 3x5
+
+# 4. Realizar una pasada hacia adelante (predicción)
+predictions = model(sample_input)
+
+print(f"Arquitectura de la Red Neuronal Simple (PyTorch):")
+print(model)
+print(f"\nEntrada de ejemplo (shape): {sample_input.shape}")
+print(f"Predicciones del modelo (shape): {predictions.shape}")
+print(f"Predicciones:\n{predictions.data}")
 ---
 
 ## ** Visualizaciones y Diagramas Conceptuales**
