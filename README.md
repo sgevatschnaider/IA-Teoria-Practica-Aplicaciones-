@@ -10,7 +10,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-## ** Hoja de Ruta del Conocimiento (Índice)**
+## **Hoja de Ruta del Conocimiento (Índice)**
 
 *   [Visión Holística del Repositorio](#visión-holística-del-repositorio)
 *   [Arquitectura del Repositorio](#arquitectura-del-repositorio)
