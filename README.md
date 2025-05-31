@@ -184,18 +184,6 @@ print(f"Predicciones:\n{predictions.data}")
 ---
 
 
-## ** Visualizaciones y Diagramas Conceptuales**
-
-*(Igual que en la respuesta anterior, se omiten por brevedad. Enlaza a tus `assets/`)*
-
----
-
-## **Arsenal de Recursos (Libros, Artículos, Cursos)**
-
-*(La lista de recursos de la respuesta anterior es muy completa y válida aquí. Se omite por brevedad.)*
-
----
-
 ## **Directrices para el Aprendizaje Autónomo**
 
 *   **Fundamentos Sólidos:** No saltes las bases matemáticas y de programación.
