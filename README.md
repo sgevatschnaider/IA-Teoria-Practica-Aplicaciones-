@@ -10,7 +10,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-## ** Hoja de Ruta del Conocimiento (Índice)**
+# ** Hoja de Ruta del Conocimiento (Índice)**
 
 *   [Visión Holística del Repositorio](#visión-holística-del-repositorio)
 *   [Arquitectura del Repositorio](#arquitectura-del-repositorio)
@@ -36,7 +36,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-## ** Visión Holística del Repositorio**
+# ** Visión Holística del Repositorio**
 
 Este ecosistema de aprendizaje incluye:
 
@@ -48,7 +48,7 @@ Este ecosistema de aprendizaje incluye:
 
 ---
 
-## ** Arquitectura del Repositorio**
+# ** Arquitectura del Repositorio**
 
 ```
 .
