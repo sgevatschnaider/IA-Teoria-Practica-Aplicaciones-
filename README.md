@@ -92,7 +92,10 @@ Abre el notebook de tu interés y ejecuta los ejemplos interactivos.
 # Notebooks Interactivos  
 Puedes abrir y ejecutar los notebooks en Google Colab directamente desde aquí:  
 
+---
+
 ## 📊 **Introducción a la materia**  
+
 
 | 📄 **Recurso** | 📥 **Acceso** |
 |--------------|------------|
