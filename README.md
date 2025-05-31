@@ -149,7 +149,7 @@ A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá s
 
 ---
 
-## **🖼️ Visualizaciones y Diagramas Conceptuales**
+## ** Visualizaciones y Diagramas Conceptuales**
 
 *(Igual que en la respuesta anterior, se omiten por brevedad. Enlaza a tus `assets/`)*
 
