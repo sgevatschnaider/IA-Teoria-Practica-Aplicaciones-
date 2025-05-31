@@ -76,6 +76,18 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 ---
 
+---
+
+## **Ejemplos Visuales**  
+
+### **Animación de Dodecaedro y BFS**  
+
+Esta animación muestra el recorrido en un **dodecaedro** usando **BFS (Búsqueda en Anchura)**.  
+
+![Animación de Dodecaedro y BFS](dfs_dodecaedro_rotacion_lenta.gif)  
+
+---
+
 ## **Puesta en Marcha: Guía de Inicio Rápido**
 
 1.  **Clonar:** `git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git && cd TU_REPOSITORIO`
