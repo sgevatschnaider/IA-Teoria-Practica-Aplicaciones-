@@ -102,12 +102,6 @@ Esta animación ilustra la construcción progresiva de una Red Neuronal Artifici
 
 ## **Fragmentos de Código Ilustrativos**
 
-¡Entendido! Aquí tienes la sección "Fragmentos de Código Ilustrativos" con dos ejemplos de IA comunes, formateados en Markdown. He elegido un ejemplo de clasificación con Scikit-learn y una red neuronal simple con PyTorch, ya que son representativos y fáciles de entender conceptualmente.
-
----
-
-## **Fragmentos de Código Ilustrativos**
-
 A continuación, se presentan algunos ejemplos de código concisos que ilustran conceptos fundamentales de Inteligencia Artificial. El código completo y contextualizado se encuentra dentro de los notebooks de cada módulo.
 
 ### **Ejemplo 1: Clasificación de Flores Iris con Scikit-learn (K-Nearest Neighbors)**
