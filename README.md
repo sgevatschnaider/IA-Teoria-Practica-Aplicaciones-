@@ -36,7 +36,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-# ** Visión Holística del Repositorio**
+## **Visión Holística del Repositorio**
 
 Este ecosistema de aprendizaje incluye:
 
@@ -48,7 +48,7 @@ Este ecosistema de aprendizaje incluye:
 
 ---
 
-# ** Arquitectura del Repositorio**
+## **Arquitectura del Repositorio**
 
 ```
 .
@@ -76,7 +76,7 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 ---
 
-## ** Puesta en Marcha: Guía de Inicio Rápido**
+## **Puesta en Marcha: Guía de Inicio Rápido**
 
 1.  **Clonar:** `git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git && cd TU_REPOSITORIO`
 2.  **Entorno Virtual (Recomendado):**
@@ -88,7 +88,7 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 ---
 
-## ** Estructura Temática Detallada y Acceso a Módulos**
+## **Estructura Temática Detallada y Acceso a Módulos**
 
 A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá su propio `README_Modulo.md` con una tabla similar a la del ejemplo que te gustó, enlazando a sus notebooks y recursos específicos.
 
