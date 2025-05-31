@@ -78,15 +78,12 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 ---
 
-## **Ejemplos Visuales**  
+## **Ejemplos Visuales**
 
-### **Animación de Dodecaedro y BFS**  
+### **Evolución de una Red Neuronal en IA**
 
-Esta animación muestra el recorrido en un **dodecaedro** usando **BFS (Búsqueda en Anchura)**.  
-
-![Animación de Dodecaedro y BFS](dfs_dodecaedro_rotacion_lenta.gif)  
-
----
+Esta animación ilustra la construcción progresiva de una Red Neuronal Artificial, mostrando cómo se añaden nodos y conexiones capa por capa, representando el crecimiento y la complejidad inherentes a los modelos de Inteligencia Artificial.
+![alt text](https://github.com/sgevatschnaider/IA-Teoria-Practica-Apli
 
 ## **Puesta en Marcha: Guía de Inicio Rápido**
 
