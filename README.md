@@ -86,60 +86,18 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 4.  **Iniciar Jupyter:** `jupyter lab` o `jupyter notebook`
 5.  **Google Colab:** Busca los badges [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](URL_NOTEBOOK) en las secciones de cada módulo.
 
----
-
-## **Estructura Temática Detallada y Acceso a Módulos**
-
-A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá su propio `README_Modulo.md` con una tabla similar a la del ejemplo que te gustó, enlazando a sus notebooks y recursos específicos.
+## 📊 **Introducción a la materia**  
 
 
-### **Módulo 0: Cimientos y Herramientas Esenciales**
-*   **Objetivos:** Configuración del entorno, maestría en NumPy, Pandas, Matplotlib/Seaborn, principios matemáticos para IA.
-*   Consulta `00_Fundamentos_Herramientas/README_Modulo.md` para acceder al contenido.
-    
-### **Módulo 1: Introducción a la IA y Resolución de Problemas**
-*   **Objetivos:** Historia de la IA, agentes inteligentes, búsqueda informada y no informada, juegos, CSPs.
-*   Consulta `01_Introduccion_IA/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 2: Fundamentos del Aprendizaje Automático**
-*   **Objetivos:** Aprendizaje supervisado (regresión, clasificación), no supervisado (clustering, reducción de dimensionalidad), evaluación de modelos, ingeniería de características.
-*   Consulta `02_Machine_Learning_Clasico/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 3: Aprendizaje Profundo (Deep Learning)**
-*   **Objetivos:** ANNs, CNNs, RNNs, Transformers, optimizadores, regularización. Frameworks: TensorFlow/Keras y PyTorch.
-*   Consulta `03_Deep_Learning/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 4: Procesamiento del Lenguaje Natural (PLN)**
-*   **Objetivos:** Preprocesamiento de texto, embeddings, modelos de lenguaje (BERT, GPT), aplicaciones (análisis de sentimiento, traducción). Librerías: NLTK, spaCy, Hugging Face.
-*   Consulta `04_PLN/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 5: Visión por Computadora**
-*   **Objetivos:** Procesamiento de imágenes, detección y reconocimiento de objetos, segmentación.
-*   Consulta `05_Vision_Computadora/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 6: Aprendizaje por Refuerzo**
-*   **Objetivos:** MDPs, Q-Learning, Policy Gradients, Actor-Crítico. Aplicaciones en juegos y robótica.
-*   Consulta `06_Aprendizaje_Refuerzo/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 7: IA Basada en Grafos y Ciencia de Redes**
-*   **Objetivos:** Teoría de grafos aplicada, embeddings de nodos/grafos, GNNs (GCNs, GraphSAGE). Librerías: NetworkX, PyTorch Geometric.
-*   Consulta `07_IA_Grafos/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 8: IA Generativa**
-*   **Objetivos:** GANs, VAEs, Modelos de Difusión. Generación de imágenes, texto, etc.
-*   Consulta `08_IA_Generativa/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 9: Ética, Gobernanza y IA Responsable**
-*   **Objetivos:** Sesgos, equidad, transparencia, explicabilidad (XAI), privacidad. Impacto social y regulaciones.
-*   Consulta `09_Etica_IA/README_Modulo.md` para acceder al contenido.
-
-### **Módulo 10: Tópicos Avanzados y Fronteras de la IA**
-*   **Objetivos:** Aprendizaje Federado, Edge AI, IA Multimodal, AI4Science.
-*   Consulta `10_Topicos_Avanzados/README_Modulo.md` para acceder al contenido.
-
-### **Módulo X: Proyectos Integradores**
-*   **Objetivos:** Desarrollo de proyectos de principio a fin, aplicando conocimientos de múltiples módulos.
-*   Consulta `Proyectos_Integradores/README.md` para ver la lista de proyectos y sus guías.
+| 📄 **Recurso** | 📥 **Acceso** |
+|--------------|------------|
+| **Introducción al BIG DATA** | [![📄 Descargar PDF](https://img.shields.io/badge/📄%20Descargar-Introducción%20al%20BIG%20DATA-red?style=for-the-badge)](https://github.com/sgevatschnaider/GraphAI-Data-Science-ML/blob/ba97ebadab45f05b0b5b3b4b5ca2fc7156a24691/BIG%20DATA%20INTRODUCCIÓN.pdf) |
+| **Cómo TikTok Sabe lo que Quieres Ver** | [![📖 Leer en GitHub Pages](https://img.shields.io/badge/📖%20Leer%20en-GitHub%20Pages-blue?style=for-the-badge&logo=github)](https://sgevatschnaider.github.io/GraphAI-Data-Science-ML/blog/tiktok-algoritmo.html) |
+| **Introducción a Big Data en Google Colab** | [![🚀 Abrir en Colab](https://img.shields.io/badge/🚀%20Abrir%20en-Google%20Colab-orange?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/github/sgevatschnaider/GraphAI-Data-Science-ML/blob/main/notebooks/Clase_Introduccion_BigData_2025.ipynb) |
+| **Sistemas de Recomendación y TikTok** | [![🔍 Abrir en Colab](https://img.shields.io/badge/🔍%20Abrir%20en-Google%20Colab-orange?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/drive/1eqcIUhjwrKRj4_4rFv_tg7vRYkxkjuUE) |
+| **Evolución y Funcionamiento de los Sistemas de Recomendación** | [![📄 Descargar PDF](https://img.shields.io/badge/📄%20Descargar-Evolución%20y%20Funcionamiento%20de%20los%20Sistemas%20de%20Recomendación-red?style=for-the-badge)](https://github.com/sgevatschnaider/GraphAI-Data-Science-ML/blob/35919d0c04d0f2e447590877c33420003bfcfcc6/Evolución%20y%20Funcionamiento%20de%20los%20Sistemas%20de%20Recomendación.pdf) |
+| **Preguntas Big Data** | [![📄 Descargar PDF](https://img.shields.io/badge/📄%20Descargar-Preguntas%20Big%20Data-red?style=for-the-badge)](https://github.com/sgevatschnaider/GraphAI-Data-Science-ML/blob/9b93a3f622c3d4a544fe593d8ede12f4f1de2f14/Preguntas_Big_Data.pdf) |
+| **Preguntas y Respuestas sobre Sistemas de Recomendación** | [![📄 Descargar PDF](https://img.shields.io/badge/📄%20Descargar-Preguntas%20y%20Respuestas%20sobre%20Sistemas%20de%20Recomendación-red?style=for-the-badge)](https://github.com/sgevatschnaider/GraphAI-Data-Science-ML/blob/ed7eb3145a0f91d14dd5e450886e9f876d626ab2/Preguntas%20y%20Respuestas%20sobre%20Sistemas%20de%20Recomendaci%C3%B3n.pdf) |
 
 ---
 
@@ -195,13 +153,7 @@ El contenido original de este repositorio se distribuye bajo la Licencia **MIT**
 
 Los materiales de terceros utilizados respetarán sus licencias originales.
 
----
-
-**Puntos Clave de esta Fusión:**
-
-*   **Índice Detallado por Módulos:** El índice principal ahora enlaza a subsecciones para cada módulo.
-*   **Platzhalter para Tablas de Módulos:** Se indica que cada módulo tendrá su propio `README_Modulo.md` con tablas de acceso a recursos (notebooks, PDFs, etc.) usando badges, similar al ejemplo que te gustó.
-*   **Concisión:** Se han omitido las listas largas (ejemplos de código, recursos) que ya estaban en la respuesta anterior, asumiendo que las reutilizarás.
-*   **Claridad y Profesionalismo:** Se mantiene el tono experto y la estructura completa.
-
+Licencia
+Este proyecto está distribuido bajo la Licencia **MIT** . Consulta el archivo LICENSE para más detalles.
+Los materiales de terceros mantienen sus licencias originales y se atribuyen apropiadamente.
 
