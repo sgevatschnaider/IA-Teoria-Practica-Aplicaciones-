@@ -92,20 +92,11 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá su propio `README_Modulo.md` con una tabla similar a la del ejemplo que te gustó, enlazando a sus notebooks y recursos específicos.
 
-*(**Nota:** Los siguientes son placeholders. Deberás crear los `README_Modulo.md` y llenarlos con los enlaces y badges correspondientes a tus materiales una vez los tengas listos).*
 
 ### **Módulo 0: Cimientos y Herramientas Esenciales**
 *   **Objetivos:** Configuración del entorno, maestría en NumPy, Pandas, Matplotlib/Seaborn, principios matemáticos para IA.
 *   Consulta `00_Fundamentos_Herramientas/README_Modulo.md` para acceder al contenido.
-    *   *(Ejemplo de cómo se vería dentro de ese README_Modulo.md):*
-        ```markdown
-        | 📄 **Recurso**                               | 📥 **Acceso**                                                                                                                              |
-        | :------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-        | **Configuración Entorno Python para IA**     | [![📖 Ver Guía](https://img.shields.io/badge/📖%20Ver%20Guía-Tutorial-blue?style=for-the-badge&logo=markdown)](./guias/configuracion.md)     |
-        | **Notebook: Introducción a NumPy**           | [![🚀 Abrir en Colab](https://img.shields.io/badge/🚀%20Abrir%20en-Google%20Colab-orange?style=for-the-badge&logo=googlecolab)](./notebooks/00_intro_numpy.ipynb) |
-        | **Notebook: Manipulación de Datos con Pandas** | [![🚀 Abrir en Colab](https://img.shields.io/badge/🚀%20Abrir%20en-Google%20Colab-orange?style=for-the-badge&logo=googlecolab)](./notebooks/01_intro_pandas.ipynb) |
-        ```
-
+    
 ### **Módulo 1: Introducción a la IA y Resolución de Problemas**
 *   **Objetivos:** Historia de la IA, agentes inteligentes, búsqueda informada y no informada, juegos, CSPs.
 *   Consulta `01_Introduccion_IA/README_Modulo.md` para acceder al contenido.
@@ -213,4 +204,4 @@ Los materiales de terceros utilizados respetarán sus licencias originales.
 *   **Concisión:** Se han omitido las listas largas (ejemplos de código, recursos) que ya estaban en la respuesta anterior, asumiendo que las reutilizarás.
 *   **Claridad y Profesionalismo:** Se mantiene el tono experto y la estructura completa.
 
-Ahora, tu trabajo principal será crear esos `README_Modulo.md` dentro de cada carpeta de módulo y llenarlos con los enlaces directos a tus materiales específicos, utilizando el formato de tabla con badges. ¡Esto hará que la navegación sea muy eficiente para tus usuarios!
+
