@@ -10,7 +10,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-## **🗺️ Hoja de Ruta del Conocimiento (Índice)**
+## ** Hoja de Ruta del Conocimiento (Índice)**
 
 *   [Visión Holística del Repositorio](#visión-holística-del-repositorio)
 *   [Arquitectura del Repositorio](#arquitectura-del-repositorio)
@@ -36,7 +36,7 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-## **🔭 Visión Holística del Repositorio**
+## ** Visión Holística del Repositorio**
 
 Este ecosistema de aprendizaje incluye:
 
@@ -48,7 +48,7 @@ Este ecosistema de aprendizaje incluye:
 
 ---
 
-## **🏛️ Arquitectura del Repositorio**
+## ** Arquitectura del Repositorio**
 
 ```
 .
@@ -76,7 +76,7 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 ---
 
-## **⚙️ Puesta en Marcha: Guía de Inicio Rápido**
+## ** Puesta en Marcha: Guía de Inicio Rápido**
 
 1.  **Clonar:** `git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git && cd TU_REPOSITORIO`
 2.  **Entorno Virtual (Recomendado):**
@@ -88,7 +88,7 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 
 ---
 
-## **📚 Estructura Temática Detallada y Acceso a Módulos**
+## ** Estructura Temática Detallada y Acceso a Módulos**
 
 A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá su propio `README_Modulo.md` con una tabla similar a la del ejemplo que te gustó, enlazando a sus notebooks y recursos específicos.
 
@@ -143,7 +143,7 @@ A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá s
 
 ---
 
-## **💡 Fragmentos de Código Ilustrativos**
+## **Fragmentos de Código Ilustrativos**
 
 *(Los ejemplos de la respuesta anterior son válidos aquí. Se omiten por brevedad, pero puedes incluirlos.)*
 
@@ -155,13 +155,13 @@ A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá s
 
 ---
 
-## **📚 Arsenal de Recursos (Libros, Artículos, Cursos)**
+## **Arsenal de Recursos (Libros, Artículos, Cursos)**
 
 *(La lista de recursos de la respuesta anterior es muy completa y válida aquí. Se omite por brevedad.)*
 
 ---
 
-## **🧭 Directrices para el Aprendizaje Autónomo**
+## **Directrices para el Aprendizaje Autónomo**
 
 *   **Fundamentos Sólidos:** No saltes las bases matemáticas y de programación.
 *   **Práctica Constante:** Codifica, experimenta, rompe y arregla.
@@ -172,7 +172,7 @@ A continuación, se detallan los módulos de aprendizaje. Cada módulo tendrá s
 
 ---
 
-## **🤝 Contribuciones y Comunidad**
+## **Contribuciones y Comunidad**
 
 Este es un proyecto vivo. ¡Tus contribuciones son bienvenidas!
 
@@ -189,7 +189,7 @@ Considera añadir un archivo `CODE_OF_CONDUCT.md`.
 
 ---
 
-## **⚖️ Marco Legal y Licencia**
+## **Marco Legal y Licencia**
 
 El contenido original de este repositorio se distribuye bajo la Licencia **MIT** (o la que elijas). Consulta el archivo [LICENSE](LICENSE) para el texto completo.
 
