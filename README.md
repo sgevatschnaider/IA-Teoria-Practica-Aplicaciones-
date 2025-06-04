@@ -154,7 +154,7 @@ print(f"Precisión en el conjunto de prueba: {accuracy:.4f}")
 # Precisión en el conjunto de prueba: 0.9778 (o similar)
 ```
 
-### **Ejemplo : Red Neuronal Simple para Regresión con PyTorch**
+### **Ejemplo 2: Red Neuronal Simple para Regresión con PyTorch**
 
 Este fragmento define una red neuronal pequeña con una capa oculta para una tarea de regresión simple y muestra cómo realizar una pasada hacia adelante (forward pass).
 
