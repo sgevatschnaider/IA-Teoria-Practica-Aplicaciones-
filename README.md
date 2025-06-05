@@ -231,11 +231,6 @@ Considera añadir un archivo `CODE_OF_CONDUCT.md`.
 
 ## **Marco Legal y Licencia**
 
-El contenido original de este repositorio se distribuye bajo la Licencia **MIT** (o la que elijas). Consulta el archivo [LICENSE](LICENSE) para el texto completo.
-
-Los materiales de terceros utilizados respetarán sus licencias originales.
-
-Licencia
 Este proyecto está distribuido bajo la Licencia **MIT** . Consulta el archivo LICENSE para más detalles.
 Los materiales de terceros mantienen sus licencias originales y se atribuyen apropiadamente.
 
