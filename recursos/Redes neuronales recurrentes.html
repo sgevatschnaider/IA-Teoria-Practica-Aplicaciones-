@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase Magistral: Redes Neuronales Recurrentes (RNN)</title>
+    <style>
+        /* [Tu CSS excelente va aquí, no se necesita cambiar] */
+         :root {
+            --primary-color: #1a237e;
+            --secondary-color: #90caf9;
+            --accent-color: #1e88e5;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-bg: #1e1e1e;
+            --code-bg: #0d1117;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            line-height: 1.8; 
+            margin: 0;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3, h4 { 
+            color: var(--primary-color); 
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        h1 { 
+            font-size: 2.8em; 
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 2.2em;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: var(--accent-color);
+            margin-top: 30px;
+        }
+
+        .header-info {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            border-radius: 15px;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        pre { 
+            background: var(--code-bg);
+            color: #e6edf3;
+            padding: 25px; 
+            border-radius: 15px; 
+            white-space: pre-wrap; 
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; 
+            font-size: 14px; 
+            overflow-x: auto;
+            border: 1px solid #30363d;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .code-header {
+            background: #21262d;
+            margin: -25px -25px 15px -25px;
+            padding: 15px 25px;
+            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid #30363d;
+            font-weight: bold;
+            color: #7d8590;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+        }
+
+        code { 
+            font-family: 'JetBrains Mono', monospace; 
+            background: rgba(27,31,35,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e91e63;
+            font-weight: 600;
+        }
+        
+        pre code {
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+            font-weight: normal;
+        }
+
+        .analogy { 
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border: 2px solid #ffb74d;
+            padding: 25px; 
+            border-radius: 15px; 
+            margin: 25px 0;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(255, 183, 77, 0.2);
+        }
+
+        .analogy::before {
+            content: "💡";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 20px;
+        }
+
+        .definition { 
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 8px solid var(--success-color);
+            padding: 25px; 
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        }
+        
+        .math-formula {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2em;
+        }
+
+        .visualization-box {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .visualization-box svg {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .tab.active {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid var(--warning-color);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 8px solid var(--warning-color);
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border: 2px solid var(--success-color);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 8px solid var(--success-color);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 3px solid white;
+        }
+
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .floating-nav a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 5px 0;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .floating-nav a:hover {
+            background: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .container { 
+                margin: 10px; 
+                padding: 15px; 
+                border-radius: 15px;
+            }
+            h1 { font-size: 2.2em; }
+            h2 { font-size: 1.8em; }
+            pre { font-size: 12px; padding: 15px; }
+            .floating-nav { display: none; }
+        }
+        
+        .quiz-section {
+            background: linear-gradient(135deg, #e1f5fe, #b3e5fc);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 2px solid #81d4fa;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+        
+        .quiz-options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-options button:hover {
+            border-color: var(--accent-color);
+            background: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-nav">
+        <a href="#introduccion">🎯 Intro</a>
+        <a href="#arquitectura">🏗️ Arquitectura</a>
+        <a href="#matematicas">📐 Matemáticas</a>
+        <a href="#problemas">⚠️ Problemas</a>
+        <a href="#codigo">💻 Código</a>
+        <a href="#evolucion">🚀 Evolución</a>
+        <a href="#quiz">🧠 Quiz</a>
+    </div>
+
+    <div class="container">
+        <h1>🧠 Clase Magistral: Redes Neuronales Recurrentes (RNN)</h1>
+        
+        <div class="header-info">
+            <p><strong>👨‍🏫 Profesor:</strong> Sergio Gevatschnaider</p>
+            <p><strong>⏱️ Duración:</strong> 90 m</p>
+            <p><strong>🎯 Nivel:</strong> Intermedio</p>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%" id="progress"></div>
+            </div>
+        </div>
+        
+        <section id="introduccion">
+            <h2>🎯 1. ¿Por qué necesitamos memoria?</h2>
+            <div class="definition">
+                <h4>📚 Definición Formal</h4>
+                <p>Las <strong>Redes Neuronales Recurrentes (RNN)</strong> son una clase de redes neuronales artificiales donde las conexiones entre nodos forman un grafo dirigido a lo largo de una secuencia temporal. Esto les permite exhibir un comportamiento dinámico temporal y usar un estado interno (memoria) para procesar secuencias de entradas de longitud variable.</p>
+            </div>
+            <div class="analogy">
+                <h3>🩺 El Médico Amnésico vs. El Médico con Bloc de Notas</h3>
+                <p><strong>Red Neuronal Tradicional (Feedforward) - El Médico Amnésico:</strong> Imagina ir a un médico que tiene amnesia. Cada vez que lo visitas, no recuerda nada de tu historial. Si le dices "tengo tos", te recetará un jarabe. Si al día siguiente vuelves y dices "ahora tengo fiebre", te dará un antipirético, ignorando por completo que ayer tenías tos. No puede diagnosticar una neumonía porque no puede conectar los síntomas a lo largo del tiempo.</p>
+                <p><strong>Red Neuronal Recurrente (RNN) - El Médico con Bloc de Notas:</strong> Ahora imagina un médico que anota todo en un bloc. Cuando llegas con tos, lo anota. Al día siguiente, cuando llegas con fiebre, lee su nota sobre la tos y dice: "Interesante, tos ayer y fiebre hoy... esto podría ser algo más serio". ¡Ha usado el contexto previo (su memoria) para hacer un diagnóstico más inteligente! Ese "bloc de notas" es el <strong>estado oculto</strong> de una RNN.</p>
+            </div>
+        </section>
+
+        <section id="arquitectura">
+            <h2>🏗️ 2. El Corazón de la RNN: El Bucle</h2>
+            <p>La magia de una RNN reside en un concepto simple pero poderoso: un bucle. La red procesa un elemento de la secuencia y pasa una "memoria" de lo que vio al siguiente paso. Esta "memoria" se llama <strong>estado oculto (hidden state)</strong>.</p>
+            <div class="visualization-box">
+                <h4>Visualización: Plegada vs. Desplegada en el Tiempo</h4>
+                <p>A la izquierda, la RNN en su forma compacta (plegada). A la derecha, la misma red desplegada a través del tiempo, mostrando cómo la información fluye.</p>
+                <svg viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Folded RNN -->
+                    <rect x="20" y="30" width="40" height="40" rx="5" stroke="#1a237e" stroke-width="1.5" fill="#e3f2fd"/>
+                    <text x="37" y="55" font-size="12" fill="#1a237e">A</text>
+                    <path d="M40 70 Q 20 85 20 50 Q 20 15 40 30" stroke="#f44336" stroke-width="1.5" fill="none"/>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f44336"/></marker>
+                    <path d="M40 70 Q 20 85 23 55" stroke="none" fill="none" marker-end="url(#arrow)"/>
+                    <text x="5" y="55" font-size="8">x_t</text>
+                    <text x="65" y="55" font-size="8">h_t</text>
+                    <line x1="10" y1="50" x2="20" y2="50" stroke="#4caf50" stroke-width="1.5"/>
+                    <line x1="60" y1="50" x2="70" y2="50" stroke="#1e88e5" stroke-width="1.5"/>
+                    <text x="15" y="95" font-size="8" font-weight="bold">Forma Plegada</text>
+                    <!-- Unfolded RNN -->
+                    <g transform="translate(100, 0)">
+                        <rect x="0" y="30" width="30" height="40" rx="5" stroke="#1a237e" stroke-width="1" fill="#e3f2fd"/>
+                        <text x="9" y="55" font-size="10">A</text>
+                        <rect x="40" y="30" width="30" height="40" rx="5" stroke="#1a237e" stroke-width="1" fill="#e3f2fd"/>
+                        <text x="49" y="55" font-size="10">A</text>
+                        <rect x="80" y="30" width="30" height="40" rx="5" stroke="#1a237e" stroke-width="1" fill="#e3f2fd"/>
+                        <text x="89" y="55" font-size="10">A</text>
+                        <!-- Inputs -->
+                        <line x1="15" y1="80" x2="15" y2="70" stroke="#4caf50" stroke-width="1"/>
+                        <text x="10" y="90" font-size="8">x_0</text>
+                        <line x1="55" y1="80" x2="55" y2="70" stroke="#4caf50" stroke-width="1"/>
+                        <text x="50" y="90" font-size="8">x_1</text>
+                        <line x1="95" y1="80" x2="95" y2="70" stroke="#4caf50" stroke-width="1"/>
+                        <text x="90" y="90" font-size="8">x_2</text>
+                        <!-- Outputs -->
+                        <line x1="15" y1="30" x2="15" y2="20" stroke="#1e88e5" stroke-width="1"/>
+                        <text x="10" y="18" font-size="8">h_0</text>
+                        <line x1="55" y1="30" x2="55" y2="20" stroke="#1e88e5" stroke-width="1"/>
+                        <text x="50" y="18" font-size="8">h_1</text>
+                        <line x1="95" y1="30" x2="95" y2="20" stroke="#1e88e5" stroke-width="1"/>
+                        <text x="90" y="18" font-size="8">h_2</text>
+                        <!-- Connections -->
+                        <line x1="30" y1="50" x2="40" y2="50" stroke="#f44336" stroke-width="1.5"/>
+                        <line x1="70" y1="50" x2="80" y2="50" stroke="#f44336" stroke-width="1.5"/>
+                        <text x="110" y="95" font-size="8" font-weight="bold">Forma Desplegada</text>
+                    </g>
+                </svg>
+                <ul>
+                    <li><strong>x_t</strong>: Es la entrada en el paso de tiempo <em>t</em> (ej. una palabra en una oración).</li>
+                    <li><strong>A</strong>: Es la celda de la RNN, que realiza el cálculo. Es la misma en cada paso.</li>
+                    <li><strong>h_t</strong>: Es el estado oculto (la salida) en el paso <em>t</em>. Contiene información sobre las entradas vistas hasta ese momento. Es la "memoria" que se pasa al siguiente paso.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="matematicas">
+            <h2>📐 3. Las Matemáticas de la Memoria</h2>
+            <p>¿Cómo se calcula exactamente el nuevo estado oculto <code>h_t</code>? Es una combinación de la memoria anterior <code>h_{t-1}</code> y la nueva información <code>x_t</code>.</p>
+            <div class="math-formula">
+                <h3>Ecuación de Transición de Estado</h3>
+                <p>h<sub>t</sub> = tanh(W<sub>hh</sub> * h<sub>t-1</sub> + W<sub>xh</sub> * x<sub>t</sub> + b<sub>h</sub>)</p>
+            </div>
+             <div class="tabs">
+                <div class="tab active" onclick="showTab(event, 'mem-update')">🧠 Actualización de Memoria</div>
+                <div class="tab" onclick="showTab(event, 'output-eq')">📤 Ecuación de Salida</div>
+                <div class="tab" onclick="showTab(event, 'weights-eq')">⚖️ Pesos Compartidos</div>
+            </div>
+            <div id="mem-update" class="tab-content active">
+                <ul>
+                    <li><code>h_{t-1}</code>: El estado oculto (memoria) del paso anterior.</li>
+                    <li><code>x_t</code>: La entrada actual.</li>
+                    <li><code>W_{hh}</code>: La matriz de pesos para la memoria anterior.</li>
+                    <li><code>W_{xh}</code>: La matriz de pesos para la entrada actual.</li>
+                    <li><code>b_h</code>: El sesgo (bias) del estado oculto.</li>
+                    <li><code>tanh</code>: Una función de activación que mantiene los valores entre -1 y 1, evitando que la memoria "explote".</li>
+                </ul>
+            </div>
+             <div id="output-eq" class="tab-content">
+                <p>A menudo, queremos una salida en cada paso de tiempo (ej. traducir una palabra en cada paso). Esta se calcula a partir del estado oculto actual:</p>
+                <div class="math-formula">
+                    y<sub>t</sub> = softmax(W<sub>hy</sub> * h<sub>t</sub> + b<sub>y</sub>)
+                </div>
+                <ul>
+                    <li><code>y_t</code>: La salida predicha en el paso t.</li>
+                    <li><code>W_{hy}</code>: La matriz de pesos que transforma la memoria en una salida.</li>
+                    <li><code>b_y</code>: El sesgo de la salida.</li>
+                </ul>
+            </div>
+            <div id="weights-eq" class="tab-content">
+                <h4>¡El Secreto es Compartir!</h4>
+                <p>Es <strong>CRUCIAL</strong> entender que las matrices de pesos (<code>W_{hh}</code>, <code>W_{xh}</code>, <code>W_{hy}</code>) y los sesgos son <strong>los mismos en cada paso de tiempo</strong>. Esto es lo que permite a la RNN generalizar su conocimiento a través de la secuencia. No aprende una regla para la primera palabra y otra para la tercera; aprende una única regla sobre cómo actualizar su memoria basándose en la nueva información, sin importar en qué punto de la secuencia se encuentre.</p>
+            </div>
+        </section>
+        
+        <section id="problemas">
+            <h2>⚠️ 4. El Talón de Aquiles: Gradientes a Largo Plazo</h2>
+            <p>Las RNN simples son maravillosas, pero tienen un problema fundamental cuando las secuencias son muy largas: el problema de la <strong>desaparición y explosión del gradiente</strong>.</p>
+             <div class="analogy">
+                <h3>🗣️ El Juego del Teléfono (Desaparición) vs. El Eco del Micrófono (Explosión)</h3>
+                <p><strong>Desaparición del Gradiente:</strong> Imagina el juego del teléfono. Una persona susurra un mensaje a la siguiente, y así sucesivamente. Para cuando el mensaje llega al final de una larga fila, es probable que se haya debilitado, distorsionado o perdido por completo. En una RNN, la "señal" del gradiente de error de los primeros pasos se debilita a medida que se propaga hacia atrás en el tiempo, haciendo imposible que la red aprenda dependencias a largo plazo.</p>
+                <p><strong>Explosión del Gradiente:</strong> Ahora imagina un micrófono demasiado cerca de un altavoz. El sonido entra en el micrófono, se amplifica, sale por el altavoz, vuelve a entrar en el micrófono, se amplifica aún más... y en segundos tienes un eco ensordecedor. En una RNN, si los gradientes son demasiado grandes, pueden crecer exponencialmente a medida que se propagan hacia atrás, desestabilizando el entrenamiento por completo.</p>
+            </div>
+            <div class="warning-box">
+                <h4>La Causa Técnica</h4>
+                <p>Durante el entrenamiento (llamado <em>Backpropagation Through Time</em>), los gradientes se multiplican repetidamente por la matriz de pesos recurrentes <code>W_{hh}</code>. Si los valores en esta matriz son consistentemente pequeños (< 1), el gradiente se encoge hasta desaparecer. Si son grandes (> 1), el gradiente crece hasta explotar.</p>
+            </div>
+        </section>
+
+        <section id="codigo">
+            <h2>💻 5. RNN en Acción: Predicción de Texto con Python</h2>
+            <p>Vamos a construir una RNN simple que aprende a predecir el siguiente carácter en la frase "hola mundo".</p>
+            <pre><code class="language-python">
+<div class="code-header">
+    🐍 RNN para generar texto con TensorFlow/Keras
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+</div>
+import tensorflow as tf
+from tensorflow.keras import layers, models
+import numpy as np
+
+# --- 1. PREPARACIÓN DE DATOS ---
+text = "hola mundo"
+chars = sorted(list(set(text)))
+char_to_idx = {c: i for i, c in enumerate(chars)}
+idx_to_char = {i: c for i, c in enumerate(chars)}
+vocab_size = len(chars)
+
+# Crear secuencias de entrada (X) y salida (y)
+seq_length = 3
+X_data, y_data = [], []
+for i in range(len(text) - seq_length):
+    X_data.append([char_to_idx[c] for c in text[i:i+seq_length]])
+    y_data.append(char_to_idx[text[i+seq_length]])
+
+# Convertir a formato numpy y one-hot encoding
+X = tf.keras.utils.to_categorical(X_data, num_classes=vocab_size)
+y = tf.keras.utils.to_categorical(y_data, num_classes=vocab_size)
+
+print(f"Número de secuencias de entrenamiento: {len(X)}")
+
+# --- 2. CONSTRUCCIÓN DEL MODELO RNN ---
+model = models.Sequential([
+    # La capa RNN. `input_shape` es (longitud_secuencia, tamaño_vocabulario)
+    layers.SimpleRNN(units=25, input_shape=(seq_length, vocab_size)),
+    
+    # Capa de salida para predecir el próximo carácter
+    layers.Dense(units=vocab_size, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.summary()
+
+# --- 3. ENTRENAMIENTO ---
+print("\n--- Entrenando el modelo... ---")
+model.fit(X, y, epochs=100, verbose=0)
+print("✅ Entrenamiento completado.")
+
+# --- 4. GENERACIÓN DE TEXTO ---
+def predict_next_char(seed_text):
+    x_pred = np.zeros((1, seq_length, vocab_size))
+    for t, char in enumerate(seed_text):
+        x_pred[0, t, char_to_idx[char]] = 1.
+    
+    prediction = model.predict(x_pred, verbose=0)[0]
+    next_idx = np.argmax(prediction)
+    return idx_to_char[next_idx]
+
+seed = "ola"
+prediction = predict_next_char(seed)
+print(f"\nPredicción: Si la entrada es '{seed}', el siguiente carácter es '{prediction}'") # Debería predecir ' '
+            </code></pre>
+        </section>
+
+        <section id="evolucion">
+            <h2>🚀 6. La Evolución: LSTM y GRU</h2>
+            <p>Para resolver el problema de los gradientes, se crearon arquitecturas más sofisticadas. No reemplazan el concepto de RNN, sino que proponen celdas recurrentes mucho más inteligentes.</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>LSTM (Long Short-Term Memory)</h4>
+                    <p><strong>Innovación:</strong> Introduce un "carril expreso" llamado <strong>estado de la celda</strong> y un sistema de <strong>compuertas (gates)</strong> que regulan el flujo de información.
+                    <ul>
+                        <li><strong>Compuerta de Olvido:</strong> Decide qué información del pasado tirar.</li>
+                        <li><strong>Compuerta de Entrada:</strong> Decide qué nueva información almacenar.</li>
+                        <li><strong>Compuerta de Salida:</strong> Decide qué parte de la memoria usar para la salida.</li>
+                    </ul>
+                    <strong>Beneficio:</strong> ¡Puede aprender dependencias a muy largo plazo! Es el estándar de oro para muchas tareas secuenciales.</p>
+                </div>
+                 <div class="timeline-item">
+                    <h4>GRU (Gated Recurrent Unit)</h4>
+                    <p><strong>Innovación:</strong> Una versión simplificada de la LSTM que combina las compuertas de olvido y entrada en una única <strong>compuerta de actualización</strong>. También tiene una <strong>compuerta de reseteo</strong>.
+                    <strong>Beneficio:</strong> Es computacionalmente más eficiente que la LSTM y ofrece un rendimiento similar en muchas tareas. Una gran alternativa.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz">
+            <h2>🧠 7. Prueba tus Conocimientos</h2>
+            <div class="quiz-section">
+                <div class="quiz-question" id="quiz-q1">
+                    <h4>Pregunta 1: ¿Cuál es la característica DEFINITORIA de una Red Neuronal Recurrente?</h4>
+                    <div class="quiz-options">
+                        <button onclick="checkAnswer(1, 'a')">a) Utiliza muchas capas para aprender características complejas.</button>
+                        <button onclick="checkAnswer(1, 'b')">b) Tiene un bucle que le permite pasar información de un paso de la secuencia al siguiente, dándole "memoria".</button>
+                        <button onclick="checkAnswer(1, 'c')">c) Es especialmente buena para clasificar imágenes.</button>
+                    </div>
+                    <p id="feedback-1" style="margin-top: 10px;"></p>
+                </div>
+                <hr style="margin: 20px 0; border: 1px solid #ddd;">
+                <div class="quiz-question" id="quiz-q2">
+                    <h4>Pregunta 2: ¿Cuál es el principal problema que las arquitecturas LSTM y GRU vinieron a solucionar?</h4>
+                    <div class="quiz-options">
+                        <button onclick="checkAnswer(2, 'a')">a) Las RNN eran demasiado lentas para entrenar.</button>
+                        <button onclick="checkAnswer(2, 'b')">b) Las RNN simples no podían generar texto coherente.</button>
+                        <button onclick="checkAnswer(2, 'c')">c) El problema de la desaparición y explosión del gradiente, que dificultaba el aprendizaje de dependencias a largo plazo.</button>
+                    </div>
+                    <p id="feedback-2" style="margin-top: 10px;"></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- FUNCIONALIDAD INTERACTIVA ---
+        function showTab(event, tabName) {
+            const parent = event.target.closest('section');
+            const tabcontent = parent.querySelectorAll(".tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            const tabs = parent.querySelectorAll(".tab");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        function copyCode(button) {
+            const pre = button.closest('pre');
+            const code = pre.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.innerText = '✅ Copiado!';
+                setTimeout(() => {
+                    button.innerText = '📋 Copiar';
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar el código: ', err);
+            });
+        }
+        
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress").style.width = scrolled + "%";
+        };
+
+        const correctAnswers = {
+            1: 'b',
+            2: 'c'
+        };
+
+        function checkAnswer(questionNum, selectedOption) {
+            const feedbackEl = document.getElementById(`feedback-${questionNum}`);
+            const questionDiv = document.getElementById(`quiz-q${questionNum}`);
+            const buttons = questionDiv.querySelectorAll('button');
+            buttons.forEach(btn => btn.disabled = true);
+
+            const correctAnswerButton = questionDiv.querySelector(`button[onclick="checkAnswer(${questionNum}, '${correctAnswers[questionNum]}')"]`);
+            
+            if (selectedOption === correctAnswers[questionNum]) {
+                const selectedButton = questionDiv.querySelector(`button[onclick="checkAnswer(${questionNum}, '${selectedOption}')"]`);
+                selectedButton.style.border = '2px solid var(--success-color)';
+                selectedButton.style.background = '#d4edda';
+                feedbackEl.innerHTML = '✅ <strong>¡Correcto!</strong> ' + (questionNum === 1 ? 'El bucle y el estado oculto son el corazón de la recurrencia.' : 'Exacto, las compuertas de las LSTM/GRU son la solución a este problema fundamental.');
+                feedbackEl.style.color = 'var(--success-color)';
+            } else {
+                const selectedButton = questionDiv.querySelector(`button[onclick="checkAnswer(${questionNum}, '${selectedOption}')"]`);
+                selectedButton.style.border = '2px solid var(--danger-color)';
+                selectedButton.style.background = '#f8d7da';
+                correctAnswerButton.style.border = '2px solid var(--success-color)';
+                
+                feedbackEl.innerHTML = '❌ <strong>Incorrecto.</strong> ' + (questionNum === 1 ? 'La característica clave es el bucle que crea la memoria para procesar secuencias.' : 'Si bien los otros puntos pueden ser ciertos, el principal avance de LSTM/GRU fue mitigar los problemas de gradiente.');
+                feedbackEl.style.color = 'var(--danger-color)';
+            }
+        }
+    </script>
+</body>
+</html>
