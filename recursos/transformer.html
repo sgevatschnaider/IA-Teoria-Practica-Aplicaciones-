@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase Magistral: La Arquitectura Transformer</title>
+    <style>
+        /* [Tu CSS excelente va aquí, no se necesita cambiar] */
+         :root {
+            --primary-color: #1a237e;
+            --secondary-color: #90caf9;
+            --accent-color: #1e88e5;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-bg: #1e1e1e;
+            --code-bg: #0d1117;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            line-height: 1.8; 
+            margin: 0;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3, h4 { 
+            color: var(--primary-color); 
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        h1 { 
+            font-size: 2.8em; 
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 2.2em;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: var(--accent-color);
+            margin-top: 30px;
+        }
+
+        .header-info {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            border-radius: 15px;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        pre { 
+            background: var(--code-bg);
+            color: #e6edf3;
+            padding: 25px; 
+            border-radius: 15px; 
+            white-space: pre-wrap; 
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; 
+            font-size: 14px; 
+            overflow-x: auto;
+            border: 1px solid #30363d;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .code-header {
+            background: #21262d;
+            margin: -25px -25px 15px -25px;
+            padding: 15px 25px;
+            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid #30363d;
+            font-weight: bold;
+            color: #7d8590;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+        }
+
+        code { 
+            font-family: 'JetBrains Mono', monospace; 
+            background: rgba(27,31,35,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e91e63;
+            font-weight: 600;
+        }
+        
+        pre code {
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+            font-weight: normal;
+        }
+
+        .analogy { 
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border: 2px solid #ffb74d;
+            padding: 25px; 
+            border-radius: 15px; 
+            margin: 25px 0;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(255, 183, 77, 0.2);
+        }
+
+        .analogy::before {
+            content: "💡";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 20px;
+        }
+
+        .definition { 
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 8px solid var(--success-color);
+            padding: 25px; 
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        }
+        
+        .math-formula {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2em;
+        }
+
+        .visualization-box {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .visualization-box svg {
+            width: 100%;
+            max-width: 650px;
+            height: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .tab.active {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 3px solid white;
+        }
+
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .floating-nav a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 5px 0;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .floating-nav a:hover {
+            background: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .container { 
+                margin: 10px; 
+                padding: 15px; 
+                border-radius: 15px;
+            }
+            h1 { font-size: 2.2em; }
+            h2 { font-size: 1.8em; }
+            pre { font-size: 12px; padding: 15px; }
+            .floating-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-nav">
+        <a href="#introduccion">🎯 Intro</a>
+        <a href="#atencion">💡 Self-Attention</a>
+        <a href="#arquitectura">🏗️ Arquitectura</a>
+        <a href="#codigo">💻 Código</a>
+        <a href="#revolucion">🚀 Revolución</a>
+    </div>
+
+    <div class="container">
+        <h1>✨ La Revolución Transformer: Attention Is All You Need</h1>
+        
+        <div class="header-info">
+            <p><strong>👨‍🏫 Profesor:</strong> Sergio Gevatschnaider</p>
+            <p><strong>⏱️ Duración:</strong> 90 minutos </p>
+            <p><strong>🎯 Nivel:</strong> Avanzado</p>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%" id="progress"></div>
+            </div>
+        </div>
+        
+        <section id="introduccion">
+            <h2>🎯 1. Rompiendo las Cadenas de la Recurrencia</h2>
+            <div class="definition">
+                <h4>📚 ¿Qué es un Transformer?</h4>
+                <p>El Transformer es una arquitectura de red neuronal introducida en 2017 que se basa completamente en mecanismos de <span class="highlight">atención</span> para procesar datos secuenciales, eliminando la necesidad de recurrencia (RNN) o convoluciones (CNN) en su núcleo. Su capacidad para procesar todos los elementos de una secuencia en <span class="highlight">paralelo</span> y capturar dependencias a larga distancia la ha convertido en la arquitectura dominante para el Procesamiento del Lenguaje Natural (NLP).</p>
+            </div>
+            <div class="analogy">
+                <h3>🚶‍♂️ La Fila del Cine (RNN) vs. 💬 El Debate Abierto (Transformer)</h3>
+                <p><strong>Red Neuronal Recurrente (RNN):</strong> Imagina una fila para entrar al cine. Para saber lo que dijo la primera persona, tienes que esperar a que el mensaje pase por toda la fila, uno por uno. Este proceso es lento y secuencial. Además, la información de la primera persona puede perderse o distorsionarse al llegar al final. Este es el "cuello de botella" de las RNN.</p>
+                <p><strong>Transformer:</strong> Ahora imagina un debate abierto en un salón. Todos los participantes (palabras) están presentes al mismo tiempo. Para entender el contexto de una palabra, esta puede "prestar atención" directamente a cualquier otra palabra en la sala, sin importar lo lejos que esté. Puede interactuar con todas las demás simultáneamente. Esto no solo es más rápido (paralelizable), sino que captura relaciones mucho más ricas y directas entre las palabras.</p>
+            </div>
+        </section>
+
+        <section id="atencion">
+            <h2>💡 2. El Mecanismo Clave: Self-Attention</h2>
+            <p>El corazón del Transformer es el <strong>Self-Attention</strong>. Permite que cada palabra en una oración evalúe la importancia de todas las demás palabras en la misma oración y ajuste su propia representación en consecuencia.</p>
+            <div class="analogy">
+                <h3>🍳 La Receta de la Atención: Queries, Keys y Values</h3>
+                <p>Imagina que estás cocinando y tienes una lista de ingredientes (la oración). Para cada ingrediente, quieres saber cómo combina con los demás. El Self-Attention hace esto a través de tres vectores que aprende para cada palabra:</p>
+                <ul>
+                    <li><strong>Query (Q - La Pregunta):</strong> Representa la palabra actual. Es el ingrediente que pregunta: "¿Con quién combino bien? Estoy buscando algo salado y crujiente".</li>
+                    <li><strong>Key (K - La Etiqueta):</strong> Es la "etiqueta" de cada palabra en la oración. Responde a la pregunta: "Yo soy salado", "Yo soy dulce", "Yo soy crujiente".</li>
+                    <li><strong>Value (V - El Contenido):</strong> Es la sustancia real de la palabra. "Yo soy 'bacon'", "Yo soy 'manzana'", "Yo soy 'lechuga'".</li>
+                </ul>
+                <p>El proceso es:
+                    <ol>
+                        <li>La <strong>Query</strong> ("busco salado y crujiente") se compara con todas las <strong>Keys</strong>.</li>
+                        <li>La compatibilidad (puntuación de atención) es alta para "bacon" (salado) y "lechuga" (crujiente), pero baja para "manzana" (dulce).</li>
+                        <li>Estas puntuaciones deciden cuánto del <strong>Value</strong> de cada palabra se va a incorporar en la nueva representación de la palabra original. Así, la palabra se enriquece con el contexto de las otras palabras más relevantes.</li>
+                    </ol>
+                </p>
+            </div>
+             <div class="math-formula">
+                <h3>Ecuación del Scaled Dot-Product Attention</h3>
+                <p>Attention(Q, K, V) = softmax( (Q * K<sup>T</sup>) / √d<sub>k</sub> ) * V</p>
+            </div>
+        </section>
+        
+        <section id="arquitectura">
+            <h2>🏗️ 3. Anatomía de un Transformer</h2>
+            <p>Un Transformer completo se construye apilando bloques de codificador (Encoder) y decodificador (Decoder), cada uno con componentes clave.</p>
+            <div class="tabs">
+                <div class="tab active" onclick="showTab(event, 'multi-head')">🧠 Multi-Head Attention</div>
+                <div class="tab" onclick="showTab(event, 'positional')">📍 Positional Encoding</div>
+                <div class="tab" onclick="showTab(event, 'stack')">🧱 Encoder-Decoder Stack</div>
+            </div>
+            <div id="multi-head" class="tab-content active">
+                <h4>No solo una cabeza, sino un comité de expertos</h4>
+                <p>En lugar de realizar la atención una sola vez, el Transformer lo hace múltiples veces en paralelo con diferentes proyecciones de Q, K y V. Esto es <strong>Multi-Head Attention</strong>.</p>
+                <p>Es como tener un comité de 8 expertos analizando una oración. Uno podría enfocarse en las relaciones sintácticas (sujeto-verbo), otro en las semánticas (sinónimos), otro en el tiempo verbal, etc. Luego, sus conclusiones se combinan para obtener una comprensión mucho más rica.</p>
+            </div>
+            <div id="positional" class="tab-content">
+                <h4>¿Y el orden de las palabras?</h4>
+                <p>Como el Transformer procesa todo a la vez, no tiene una noción inherente del orden de las palabras. Para solucionar esto, se inyecta una "señal de posición" en las entradas: el <strong>Positional Encoding</strong>.</p>
+                <p>Es como añadir coordenadas GPS a cada palabra. Se utiliza una ingeniosa combinación de funciones seno y coseno que le da a cada posición en la secuencia una firma única, permitiendo al modelo aprender la importancia del orden.</p>
+            </div>
+             <div id="stack" class="tab-content">
+                <h4>La Arquitectura Completa</h4>
+                <p>El modelo original tenía una pila de 6 Encoders y 6 Decoders.</p>
+                <ul>
+                    <li><strong>Encoder:</strong> Su trabajo es leer la oración de entrada y construir una representación rica en contexto para cada palabra. Cada encoder tiene una capa de Multi-Head Attention y una red Feed-Forward.</li>
+                    <li><strong>Decoder:</strong> Su trabajo es generar la oración de salida, una palabra a la vez. Utiliza el output del encoder y lo que ha generado hasta ahora para predecir la siguiente palabra. Tiene dos capas de atención: una para sus propias salidas (Masked Self-Attention) y otra para prestar atención a la representación del encoder.</li>
+                </ul>
+            </div>
+            <div class="visualization-box">
+                <h4>Diagrama de la Arquitectura Encoder-Decoder</h4>
+                <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+                    <style>.label{font-size: 5px; font-family: sans-serif; text-anchor: middle;}</style>
+                    <!-- Encoder Stack -->
+                    <g id="encoder">
+                        <rect x="20" y="40" width="50" height="60" rx="5" fill="#e3f2fd" stroke="#1a237e"/>
+                        <text x="45" y="35" class="label" font-weight="bold">Encoder (Nx)</text>
+                        <text x="45" y="55" class="label">Multi-Head</text>
+                        <text x="45" y="60" class="label">Attention</text>
+                        <text x="45" y="80" class="label">Feed Forward</text>
+                        <path d="M45 110 V 120" stroke="black" stroke-width="0.5"/>
+                        <text x="45" y="125" class="label">Inputs</text>
+                    </g>
+                    <!-- Decoder Stack -->
+                    <g id="decoder">
+                        <rect x="130" y="40" width="50" height="60" rx="5" fill="#e8f5e9" stroke="#4caf50"/>
+                        <text x="155" y="35" class="label" font-weight="bold">Decoder (Nx)</text>
+                        <text x="155" y="55" class="label">Masked</text>
+                        <text x="155" y="60" class="label">Multi-Head Attn</text>
+                        <text x="155" y="75" class="label">Multi-Head Attn</text>
+                        <text x="155" y="90" class="label">Feed Forward</text>
+                        <path d="M155 110 V 120" stroke="black" stroke-width="0.5"/>
+                        <text x="155" y="125" class="label">Outputs (shifted right)</text>
+                        <path d="M155 20 V 10" stroke="black" stroke-width="0.5"/>
+                        <text x="155" y="7" class="label">Output Probabilities</text>
+                    </g>
+                    <!-- Connection -->
+                    <path d="M 70 60 H 130" stroke="#f44336" stroke-width="1.5" marker-end="url(#arrow)"/>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f44336"/></marker>
+                </svg>
+            </div>
+        </section>
+
+        <section id="codigo">
+            <h2>💻 4. Transformer en Acción: Clasificación de Texto</h2>
+            <p>Construiremos un clasificador de sentimiento para reseñas de películas de IMDB usando un bloque Transformer personalizado.</p>
+            <pre><code class="language-python">
+<div class="code-header">
+    🐍 Bloque Transformer para clasificación con TensorFlow/Keras
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copiar</button>
+</div>
+import tensorflow as tf
+from tensorflow.keras import layers
+
+class TransformerBlock(layers.Layer):
+    def __init__(self, embed_dim, num_heads, ff_dim, rate=0.1):
+        super().__init__()
+        self.att = layers.MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim)
+        self.ffn = tf.keras.Sequential(
+            [layers.Dense(ff_dim, activation="relu"), layers.Dense(embed_dim)]
+        )
+        self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
+        self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
+        self.dropout1 = layers.Dropout(rate)
+        self.dropout2 = layers.Dropout(rate)
+
+    def call(self, inputs, training=False):
+        # Multi-head attention block
+        attn_output = self.att(inputs, inputs)
+        attn_output = self.dropout1(attn_output, training=training)
+        out1 = self.layernorm1(inputs + attn_output) # Residual connection
+        
+        # Feed-forward block
+        ffn_output = self.ffn(out1)
+        ffn_output = self.dropout2(ffn_output, training=training)
+        return self.layernorm2(out1 + ffn_output) # Residual connection
+
+# --- Construcción del modelo completo ---
+vocab_size = 20000
+maxlen = 200
+embed_dim = 32
+num_heads = 2
+ff_dim = 32
+
+inputs = layers.Input(shape=(maxlen,))
+embedding_layer = layers.Embedding(input_dim=vocab_size, output_dim=embed_dim)
+x = embedding_layer(inputs)
+# Añadimos el Positional Encoding aquí (no mostrado por brevedad)
+
+transformer_block = TransformerBlock(embed_dim, num_heads, ff_dim)
+x = transformer_block(x)
+
+x = layers.GlobalAveragePooling1D()(x) # Agregamos las representaciones
+x = layers.Dropout(0.1)(x)
+x = layers.Dense(20, activation="relu")(x)
+x = layers.Dropout(0.1)(x)
+outputs = layers.Dense(2, activation="softmax")(x)
+
+model = tf.keras.Model(inputs=inputs, outputs=outputs)
+model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
+model.summary()
+
+# Este modelo podría ser entrenado en el dataset IMDB, por ejemplo.
+# (El código de carga y entrenamiento se omite por brevedad)
+            </code></pre>
+        </section>
+
+        <section id="revolucion">
+            <h2>🚀 5. La Revolución: El Mundo Post-Transformer</h2>
+            <p>La publicación de "Attention Is All You Need" en 2017 fue un evento sísmico. Desencadenó una explosión de innovación:</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>BERT (2018) - El Contextualizador</h4>
+                    <p><strong>Innovación:</strong> Usó solo el <strong>Encoder</strong> del Transformer para leer texto en ambas direcciones (bidireccional) y aprender representaciones de palabras ricas en contexto. Revolucionó la Búsqueda de Google y casi todas las tareas de NLP.</p>
+                </div>
+                 <div class="timeline-item">
+                    <h4>GPT (Series, 2018-Presente) - El Generador</h4>
+                    <p><strong>Innovación:</strong> Usó solo el <strong>Decoder</strong> del Transformer para crear modelos de lenguaje auto-regresivos a una escala sin precedentes. Son maestros en la generación de texto coherente y creativo. La base de ChatGPT.</p>
+                </div>
+                 <div class="timeline-item">
+                    <h4>ViT, DALL-E, AlphaFold (2020+) - Más allá del Texto</h4>
+                    <p><strong>Innovación:</strong> Demostró que la atención no se limita al texto. Los Vision Transformers (ViT) la usan para imágenes, DALL-E para generar imágenes a partir de texto, y AlphaFold para predecir la estructura de las proteínas, resolviendo un gran problema de la biología.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- FUNCIONALIDAD INTERACTIVA ---
+        function showTab(event, tabName) {
+            const parent = event.target.closest('section');
+            const tabcontent = parent.querySelectorAll(".tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            const tabs = parent.querySelectorAll(".tab");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        function copyCode(button) {
+            const pre = button.closest('pre');
+            const code = pre.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.innerText = '✅ Copiado!';
+                setTimeout(() => {
+                    button.innerText = '📋 Copiar';
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar el código: ', err);
+            });
+        }
+        
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress").style.width = scrolled + "%";
+        };
+    </script>
+</body>
+</html>
