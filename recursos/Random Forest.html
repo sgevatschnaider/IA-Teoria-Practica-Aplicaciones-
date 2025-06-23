@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Clase · Random Forest (Bosque Aleatorio)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <!-- Chart.js (carga clásica con SRI) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+          integrity="sha384-a6nBtOP3jSiQBb1UFVQb9DLjQy6lzJWFLaWLeSl3Cu3DnZRxn0u9YtKH4G8VDzX+"
+          crossorigin="anonymous" defer></script>
+
+  <!-- ====== ESTILOS (inline para la demo) ====== -->
+  <style>
+    :root{
+      --primary:#1b5e20;
+      --secondary:#66bb6a;
+      --accent:#2e7d32;
+      --info:#1976d2;
+      --warning:#f57c00;
+      --danger:#c62828;
+      --bg-light:#fafafa;
+      --text-dark:#263238;
+      --code-bg:#0d1117;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:linear-gradient(135deg,#43a047 0%,#1b5e20 100%);
+      line-height:1.8;color:var(--text-dark);min-height:100vh;
+    }
+    @media(prefers-color-scheme:dark){
+      body{background:#000;color:#e0e0e0;}
+    }
+
+    /* ---------- Contenedor principal ---------- */
+    main{
+      max-width:1200px;margin:24px auto;padding:24px;
+      background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);
+      border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);
+    }
+    @media(max-width:768px){main{margin:12px;padding:16px;border-radius:16px;}}
+
+    h1,h2,h3{color:var(--primary);margin-bottom:20px;}
+    h1{font-size:2.6rem;text-align:center}
+    h2{font-size:2rem;border-bottom:3px solid var(--secondary);padding-bottom:6px;margin-top:40px;}
+    h3{font-size:1.4rem;color:var(--accent);margin-top:30px;}
+
+    /* ---------- Barra de progreso ---------- */
+    .progress-bar{height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden;margin:0;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--secondary));width:0%;}
+    
+    /* ---------- Navegación flotante ---------- */
+    nav.floating{
+      position:fixed;right:20px;top:50%;transform:translateY(-50%);
+      background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+      border-radius:14px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.1);z-index:900;
+    }
+    nav.floating a{
+      display:block;text-decoration:none;color:var(--primary);
+      padding:8px 12px;font-size:14px;font-weight:600;
+      border-radius:8px;margin:2px 0;transition:background .3s;
+    }
+    nav.floating a:hover{background:var(--secondary);color:#fff;transform:translateX(-5px);}
+    @media(max-width:768px){nav.floating{display:none;}}
+
+    /* ---------- Utilitarios ---------- */
+    .definition{
+      background:linear-gradient(135deg,#e8f5e9,#c8e6c9);
+      border-left:6px solid var(--accent);padding:24px;border-radius:14px;margin:20px 0;
+    }
+    .highlight{background:var(--secondary);color:#fff;padding:2px 6px;border-radius:4px;font-weight:600;}
+    .note{
+      background:linear-gradient(135deg,#fff8e1,#ffecb3);
+      border-left:6px solid var(--warning);padding:20px;border-radius:14px;margin:16px 0;
+    }
+
+    .tabs{
+      display:flex;flex-wrap:wrap;margin:20px 0;background:rgba(0,0,0,.03);border-radius:10px;
+    }
+    .tab{
+      flex:1;min-width:120px;text-align:center;padding:12px;font-weight:600;cursor:pointer;
+      border-radius:8px;transition:background .3s;
+    }
+    .tab.active{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;animation:fadeIn .5s;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+    .grid{display:grid;gap:20px;}
+    .grid.auto-fit{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+    .card{
+      background:#fff;border-radius:14px;padding:20px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);transition:transform .3s;
+    }
+    .card:hover{transform:translateY(-4px);}
+    
+    /* ---------- Demo ---------- */
+    .demo{
+      background:#fff;padding:20px;border-radius:14px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+    }
+    .demo-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:16px;}
+    .metric{font-size:2rem;color:var(--primary);font-weight:bold;}
+    #oobChart{max-width:100%;height:auto;}
+
+    /* ---------- Dark-mode ---------- */
+    @media(prefers-color-scheme:dark){
+      main{background:#1e1e1e;color:#eee;}
+      nav.floating{background:#303030;}
+      .card,.demo,.definition,.note{background:#272727;}
+      .tab.active{background:#272727;}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Barra de progreso -->
+  <div class="progress-bar" aria-hidden="true">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <!-- Navegación flotante -->
+  <nav class="floating" aria-label="Navegación de la clase">
+    <a href="#intro">🌲 Introducción</a>
+    <a href="#anatomia">🏗️ Anatomía</a>
+    <a href="#fundamentos">📚 Fundamentos</a>
+    <a href="#metricas">🔧 Parámetros</a>
+    <a href="#demo">🧪 Demo</a>
+    <a href="#ventajas">⚖️ Ventajas &amp; Limitaciones</a>
+    <a href="#aplicaciones">🎯 Aplicaciones</a>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main>
+    <header>
+      <h1>🌳 Random Forest (Bosque Aleatorio)</h1>
+      <p style="text-align:center"><strong>👨‍🏫 Profesor:</strong> Sergio Gevatschnaider &nbsp;|&nbsp; <strong>⏳ Duración:</strong> 120 min</p>
+    </header>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <section id="intro">
+      <h2>1. ¿Por qué Random Forest?</h2>
+      <div class="definition">
+        <p>Un <span class="highlight">Random Forest</span> construye múltiples árboles de decisión sobre subconjuntos aleatorios de datos
+           y variables, y luego <em>agrega</em> sus predicciones (voto mayoritario o promedio).  
+           Esta estrategia <strong>reduce la varianza</strong> sin aumentar demasiado el sesgo, creando modelos robustos y estables.</p>
+      </div>
+    </section>
+
+    <!-- 2. ANATOMÍA -->
+    <section id="anatomia">
+      <h2>2. Anatomía de un Bosque</h2>
+      <div class="grid auto-fit">
+        <div class="card">
+          <h3>🌱 Bootstrap Sampling</h3>
+          <p>Cada árbol se entrena con una muestra con reemplazo del conjunto de entrenamiento.</p>
+        </div>
+        <div class="card">
+          <h3>🔀 Subconjunto de Características</h3>
+          <p>En cada división se usa un grupo aleatorio de variables (<code>max_features</code>),
+             reduciendo la correlación entre árboles.</p>
+        </div>
+        <div class="card">
+          <h3>🗳️ Agregación</h3>
+          <p>Clasificación → <em>voto mayoritario</em><br>Regresión → <em>promedio</em>.</p>
+        </div>
+        <div class="card">
+          <h3>🎯 OOB Score</h3>
+          <p>Las observaciones fuera de cada bootstrap (<em>Out-Of-Bag</em>) actúan como validación interna.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FUNDAMENTOS TEÓRICOS -->
+    <section id="fundamentos">
+      <h2>3. Fundamentos Teóricos</h2>
+
+      <h3>3.1 Bagging y Ley de los Grandes Números</h3>
+      <p>Al promediar clasificadores <em>i.i.d.</em> con varianza <span class="highlight">σ²</span>,
+         la varianza del conjunto disminuye como <span class="highlight">σ² ⁄ T</span>,
+         donde <span class="highlight">T</span> es el número de modelos.</p>
+
+      <h3>3.2 Sesgo-Varianza-Correlación</h3>
+      <p>La precisión de un bosque depende de la varianza individual de cada árbol y de la
+         correlación promedio entre ellos. Random Forest mantiene árboles poco correlacionados
+         gracias al <em>feature bagging</em>.</p>
+
+      <h3>3.3 Importancia de Variables</h3>
+      <div class="note">
+        <p><strong>MDI (Impureza Media Disminuida):</strong> rápida, pero sesgada
+           hacia variables con muchas categorías.<br>
+           <strong>Permutaciones:</strong> más costoso, pero refleja la contribución real al rendimiento.</p>
+      </div>
+
+      <h3>3.4 OOB Error vs. Validación Cruzada</h3>
+      <p>Con <code>bootstrap=true</code>, el error OOB ofrece una estimación comparable a una k-fold
+         con <span class="highlight">k ≈ T</span> particiones, pero con menor coste.</p>
+
+      <h3>3.5 Limitaciones Teóricas</h3>
+      <ul style="margin-left:20px;line-height:1.8">
+        <li>Puede sobre-ajustar si <code>max_depth</code> no se controla en datos muy ruidosos.</li>
+        <li>Interpretación global limitada (se usan SHAP o importancias).</li>
+        <li>Tiempo de inferencia crece linealmente con el número de árboles.</li>
+      </ul>
+    </section>
+
+    <!-- 4. PARÁMETROS -->
+    <section id="metricas">
+      <h2>4. Parámetros Clave y Métricas</h2>
+
+      <div class="tabs" role="tablist">
+        <div class="tab active" role="tab" aria-selected="true" aria-controls="tab-oob" onclick="showTab(event,'tab-oob')">📈 OOB Error</div>
+        <div class="tab" role="tab" aria-controls="tab-import" onclick="showTab(event,'tab-import')">🌟 Importancia</div>
+        <div class="tab" role="tab" aria-controls="tab-hyper" onclick="showTab(event,'tab-hyper')">⚙️ Hiperparámetros</div>
+      </div>
+
+      <!-- OOB -->
+      <div id="tab-oob" class="tab-content active">
+        <div class="definition">
+          <p>El <strong>Error OOB</strong> se calcula con las observaciones que cada árbol no vio.
+             Suele estabilizarse cuando <span class="highlight">n_estimators ≥ 100</span>.</p>
+        </div>
+      </div>
+
+      <!-- Importancia -->
+      <div id="tab-import" class="tab-content">
+        <div class="definition">
+          <p><strong>MDI</strong> (reducción de impureza) y <strong>Permutation Importance</strong> son
+             los dos enfoques más comunes para cuantificar el aporte de cada variable.</p>
+        </div>
+      </div>
+
+      <!-- Hiperparámetros -->
+      <div id="tab-hyper" class="tab-content">
+        <div class="grid auto-fit">
+          <div class="card"><h3><code>n_estimators</code></h3><p>Número de árboles (mayor → menor varianza, mayor cómputo).</p></div>
+          <div class="card"><h3><code>max_depth</code></h3><p>Profundidad máxima de cada árbol (control del sobre-ajuste).</p></div>
+          <div class="card"><h3><code>max_features</code></h3><p>Variables candidatas por split.<br>Clasificación → √p<br>Regresión → p/3</p></div>
+          <div class="card"><h3><code>min_samples_leaf</code></h3><p>Tamaño mínimo de hoja, suaviza predicciones.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. DEMO -->
+    <section id="demo">
+      <h2>5. Demo Interactiva — Convergencia del Error OOB</h2>
+
+      <div class="demo">
+        <div class="demo-controls">
+          <label for="trees">Número de árboles (<span id="treesVal">100</span>):</label>
+          <input type="range" id="trees" min="10" max="500" step="10" value="100">
+        </div>
+
+        <canvas id="oobChart" aria-label="Gráfico del error OOB"></canvas>
+
+        <p style="margin-top:12px">
+          <strong>Error OOB*:</strong> <span class="metric" id="oobVal">0.160</span><br>
+          <small>*Valor sintetizado con una función exponencial para fines docentes.</small>
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. VENTAJAS Y LIMITACIONES -->
+    <section id="ventajas">
+      <h2>6. Ventajas &amp; Limitaciones</h2>
+      <div class="grid auto-fit">
+        <div class="card">
+          <h3>✅ Ventajas</h3>
+          <ul style="margin-left:18px;line-height:1.8">
+            <li>Alto rendimiento “listo para usar”.</li>
+            <li>Robusto a outliers y datos faltantes.</li>
+            <li>Estimación OOB integrada.</li>
+            <li>Manejo de variables mixtas.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>⚠️ Limitaciones</h3>
+          <ul style="margin-left:18px;line-height:1.8">
+            <li>Tamaño de modelo en memoria.</li>
+            <li>Tiempos de inferencia más altos.</li>
+            <li>Interpretabilidad global limitada.</li>
+            <li>Importancia MDI sesgada a variables con muchas categorías.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. APLICACIONES -->
+    <section id="aplicaciones">
+      <h2>7. Aplicaciones Prácticas</h2>
+      <ul style="margin-left:20px;line-height:1.9">
+        <li>🔍 Detección de fraude financiero</li>
+        <li>🩺 Diagnóstico médico asistido</li>
+        <li>🌳 Clasificación de especies en bioinformática</li>
+        <li>🏡 Tasación inmobiliaria (regresión)</li>
+        <li>💬 Filtrado de spam y toxicidad</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ====== JAVASCRIPT ====== -->
+  <script>
+    /* ---------- Helper ---------- */
+    const $ = id => document.getElementById(id);
+
+    /* ---------- Navegación por pestañas ---------- */
+    function showTab(e,id){
+      document.querySelectorAll('.tab').forEach(t=>{
+        const active = t===e.currentTarget;
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-selected', active);
+      });
+      document.querySelectorAll('.tab-content').forEach(c=> c.classList.toggle('active', c.id===id));
+    }
+
+    /* ---------- Barra de progreso ---------- */
+    window.addEventListener('scroll',()=>{
+      const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if(h>0) $('progress').style.width = (window.scrollY / h)*100 + '%';
+    });
+
+    /* ---------- DEMO OOB SINTÉTICO ---------- */
+    const syntheticOOB = n => (0.15 + 0.40 * Math.exp(-n/80)).toFixed(3);
+
+    function buildSeries(maxN){
+      const labels=[], data=[];
+      for(let k=10;k<=maxN;k+=10){labels.push(k);data.push(syntheticOOB(k));}
+      return {labels,data};
+    }
+
+    let chart;
+    function renderChart(maxN){
+      const {labels,data}=buildSeries(maxN);
+      if(!chart){
+        chart = new Chart($('oobChart'),{
+          type:'line',
+          data:{labels,datasets:[{label:'Error OOB',data,borderWidth:2,fill:false,tension:0.3}]},
+          options:{responsive:true,plugins:{legend:{display:false}}}
+        });
+      }else{
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = data;
+        chart.update('none');
+      }
+    }
+
+    function updateForest(){
+      const n = +$('trees').value;
+      $('treesVal').textContent = n;
+      $('oobVal').textContent   = syntheticOOB(n);
+      renderChart(n);
+    }
+
+    /* ---------- Inicio ---------- */
+    window.addEventListener('DOMContentLoaded',()=>{
+      $('trees').addEventListener('input',updateForest);
+      updateForest();   // primer render
+    });
+  </script>
+</body>
+</html>
+
+
+
