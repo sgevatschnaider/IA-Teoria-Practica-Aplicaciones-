@@ -140,12 +140,6 @@ Puedes abrir y ejecutar los notebooks en Google Colab directamente desde aquí:
 | **[EXTRA] Visualización: Random Forest** <br><br> <details><summary><strong>Resumen:</strong> <em>(haz clic para expandir/colapsar)</em></summary><p>Explora el concepto de 'ensemble' con esta guía visual sobre Random Forest, mostrando cómo la combinación de múltiples árboles mejora la precisión y la robustez del modelo predictivo.</p></details>                          | [![Ver Página Web](https://img.shields.io/badge/Abrir-Página-brightgreen?style=for-the-badge&logo=html5)](https://sgevatschnaider.github.io/IA-Teoria-Practica/recursos/Random%20Forest.html)        |
 | **[EXTRA] Visualización: Gradient Boosting** <br><br> <details><summary><strong>Resumen:</strong> <em>(haz clic para expandir/colapsar)</em></summary><p>Sumérgete en el funcionamiento de Gradient Boosting, un potente método de ensamblaje que construye modelos de forma secuencial, donde cada nuevo modelo corrige los errores del anterior.</p></details> | [![Ver Página Web](https://img.shields.io/badge/Abrir-Página-brightgreen?style=for-the-badge&logo=html5)](https://sgevatschnaider.github.io/IA-Teoria-Practica/recursos/Gradient%20Boosted%20Trees.html)      |
 
-¡Perfecto! Basándome en el excelente formato que estableciste y analizando el propósito de cada notebook a partir de su nombre de archivo, he creado los títulos y resúmenes correspondientes.
-
-He agrupado todos los notebooks bajo un único título de sección sobre **Estructuras de Datos** para mantener la cohesión temática.
-
-Aquí tienes el código Markdown listo para usar:
-
 ---
 
 ## 🏗️ Estructuras de Datos en Python: Los Bloques Fundamentales
