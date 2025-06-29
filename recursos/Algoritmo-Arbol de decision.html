@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Árboles de Decisión · Demo Educativa Avanzada (v2.2 Fixed)</title>
+  <style>
+    :root {
+      --green: #28c24b; --green-dark: #146314; --green-light: #a4f5b6;
+      --accent: #12c2e9; --accent2: #f64f59; --accent3: #c471ed;
+      --warning: #ff9500; --info: #007aff; --success: #34c759;
+      --rad: 14px; --glass-bg: rgba(255, 255, 255, .08);
+      --glass-border: rgba(255, 255, 255, .12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0d1421 0%, #1a2332 50%, #0f1419 100%);
+      color: #fff; padding: 1rem; line-height: 1.6;
+    }
+    .header { text-align: center; margin-bottom: 2rem; }
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: .5rem; letter-spacing: -0.02em;
+    }
+    .subtitle { color: var(--green-light); font-size: 1.1rem; opacity: .9; }
+    .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; }
+    @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
+    
+    .card {
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px); border-radius: var(--rad); padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+    }
+    main { min-height: 600px; }
+    h2 {
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(90deg, var(--green-light), #d8ffd8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+    #treeZone {
+      width: 100%; height: 450px; border: 1px solid var(--glass-border);
+      border-radius: 8px; background: rgba(0, 0, 0, .2); position: relative; overflow: hidden; cursor: grab;
+    }
+    #treeZone:active { cursor: grabbing; }
+    .controls { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1rem 0; }
+    .btn {
+      padding: .6rem 1.2rem; border: none; border-radius: 8px; font-weight: 600;
+      color: #fff; cursor: pointer; transition: all .3s; font-size: .9rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+    .btn.primary { background: linear-gradient(135deg, var(--green), var(--green-dark)); }
+    .btn.danger { background: linear-gradient(135deg, var(--accent2), #d73a49); }
+    .btn.info { background: linear-gradient(135deg, var(--info), #0056cc); }
+    .btn.warning { background: linear-gradient(135deg, var(--warning), #cc7a00); }
+    .btn.secondary { background: linear-gradient(135deg, #8e9eab, #5e6d7a); }
+    .btn:disabled { background: #555; cursor: not-allowed; opacity: 0.6; }
+    
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;
+      font-size: .9rem;
+    }
+    .stat-item { background: rgba(255, 255, 255, .03); padding: .8rem; border-radius: 6px; border-left: 3px solid var(--accent); }
+    .stat-value { font-size: 1.2rem; font-weight: 700; color: var(--green-light); }
+    
+    aside h3 { font-size: 1.2rem; margin-bottom: .8rem; color: var(--accent); }
+    .config-group { margin-bottom: 1.5rem; }
+    
+    .node-info {
+      background: rgba(255, 255, 255, .03); padding: 1rem; border-radius: 8px;
+      margin-top: 1rem; border-left: 3px solid var(--accent2); min-height: 100px;
+    }
+    .node-info h4 { color: var(--accent2); margin-bottom: .5rem; }
+    
+    .tooltip {
+      position: absolute; background: rgba(0, 0, 0, .9); color: #fff; padding: .5rem .8rem;
+      border-radius: 6px; font-size: .8rem; pointer-events: none; z-index: 1000;
+      border: 1px solid var(--glass-border); backdrop-filter: blur(8px);
+      transform: translate(-50%, -110%);
+    }
+    
+    .algorithm-info {
+      background: rgba(0, 122, 255, .1); border: 1px solid rgba(0, 122, 255, .3);
+      padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: .9rem;
+    }
+    
+    .feature-importance { margin-top: 1rem; }
+    .feature-bar { display: flex; align-items: center; margin-bottom: .5rem; font-size: .85rem; }
+    .feature-name { min-width: 90px; color: var(--green-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-container { flex: 1; height: 20px; background: rgba(255, 255, 255, .1); border-radius: 10px; margin: 0 .5rem; overflow: hidden; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .5s ease-out; }
+    .bar-value { min-width: 35px; text-align: right; color: #fff; font-weight: 600; }
+
+    /* Estilos para selectores */
+    select {
+      padding: .6rem 1rem; border: 1px solid var(--glass-border); border-radius: 8px;
+      background: rgba(255, 255, 255, .05); color: #fff; font-size: .9rem;
+      cursor: pointer; transition: all .3s;
+    }
+    select:hover { background: rgba(255, 255, 255, .08); }
+    select option { background: #1a2332; color: #fff; }
+
+    /* Estilos para sliders */
+    input[type="range"] {
+      width: 100%; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .1);
+      outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); cursor: pointer; border: 2px solid #fff;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); cursor: pointer; border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Árboles de Decisión</h1>
+    <p class="subtitle">Visualización interactiva con lógica de Machine Learning real</p>
+  </header>
+
+  <div class="container">
+    <main class="card main-card">
+      <h2>🌳 Visualización del Árbol</h2>
+      <div class="algorithm-info">
+        <strong>Algoritmo:</strong> ID3/CART. El árbol busca la división que maximiza la <strong>Ganancia de Información</strong> en cada paso, usando la impureza de Gini o la Entropía.
+      </div>
+      
+      <div id="treeZone"></div>
+      
+      <div class="controls">
+        <button id="splitBtn" class="btn primary">🌱 Dividir Mejor Nodo</button>
+        <button id="autoGrowBtn" class="btn info">🚀 Crecimiento Auto</button>
+        <button id="pruneBtn" class="btn warning">✂️ Podar Último Nivel</button>
+        <button id="resetBtn" class="btn danger">🗑️ Reiniciar</button>
+        <button id="exportJsonBtn" class="btn secondary">📥 Exportar a JSON</button>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-item"><div>Profundidad Actual</div><div class="stat-value" id="currentDepth">1</div></div>
+        <div class="stat-item"><div>Total de Nodos</div><div class="stat-value" id="totalNodes">1</div></div>
+        <div class="stat-item"><div>Nodos Hoja</div><div class="stat-value" id="leafNodes">1</div></div>
+        <div class="stat-item"><div>Impureza Promedio</div><div class="stat-value" id="avgImpurity">0.50</div></div>
+      </div>
+    </main>
+
+    <aside class="card panel">
+      <h3>🎛️ Configuración y Control</h3>
+      
+      <div class="config-group">
+        <h4 style="margin-bottom:.5rem;color:var(--green-light)">Dataset:</h4>
+        <select id="datasetSelect">
+          <option value="iris">🌸 Iris (Clasificación)</option>
+          <option value="titanic">🚢 Titanic (Supervivencia)</option>
+        </select>
+      </div>
+      
+      <div class="config-group">
+        <label for="impurityMetric" style="display:block;margin-bottom:.3rem;color:var(--green-light)">Métrica de Impureza:</label>
+        <select id="impurityMetric">
+          <option value="gini">Impureza de Gini</option>
+          <option value="entropy">Entropía</option>
+        </select>
+      </div>
+      
+      <div class="config-group">
+        <label for="maxDepthSlider" style="display:block;margin-bottom:.3rem;color:var(--green-light)">Profundidad Máxima: <span id="maxDepthValue" style="color:var(--accent); font-weight:bold;">5</span></label>
+        <input type="range" id="maxDepthSlider" min="1" max="8" value="5">
+      </div>
+
+      <div class="config-group">
+        <label for="minSamplesSlider" style="display:block;margin-bottom:.3rem;color:var(--green-light)">Muestras Mín. por Hoja: <span id="minSamplesValue" style="color:var(--accent); font-weight:bold;">5</span></label>
+        <input type="range" id="minSamplesSlider" min="1" max="20" value="5">
+      </div>
+      
+      <div class="node-info" id="nodeInfo">
+        <h4>Información del Nodo</h4>
+        <p>Haz clic en un nodo para ver sus detalles.</p>
+      </div>
+      
+      <div class="feature-importance">
+        <h4 style="margin-bottom:.8rem;color:var(--green-light)">Importancia de Features:</h4>
+        <div id="featureImportanceList"></div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // ========= FUNCIÓN HELPER PARA CSS VARIABLES =========
+      function getCSS(variable) {
+        return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+      }
+
+      // ========= DATASETS Y CONFIGURACIÓN =========
+      const DATASETS = {
+        iris: { 
+          features: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'], 
+          target: 'species', 
+          classes: ['setosa', 'versicolor', 'virginica']
+        },
+        titanic: { 
+          features: ['pclass', 'sex', 'age', 'fare'], 
+          target: 'survived', 
+          classes: ['No', 'Sí']
+        }
+      };
+      
+      // ========= ELEMENTOS DEL DOM =========
+      const dom = {
+        treeZone: document.getElementById('treeZone'),
+        splitBtn: document.getElementById('splitBtn'),
+        autoGrowBtn: document.getElementById('autoGrowBtn'),
+        pruneBtn: document.getElementById('pruneBtn'),
+        resetBtn: document.getElementById('resetBtn'),
+        exportJsonBtn: document.getElementById('exportJsonBtn'),
+        datasetSelect: document.getElementById('datasetSelect'),
+        impuritySelect: document.getElementById('impurityMetric'),
+        maxDepthSlider: document.getElementById('maxDepthSlider'),
+        maxDepthValue: document.getElementById('maxDepthValue'),
+        minSamplesSlider: document.getElementById('minSamplesSlider'),
+        minSamplesValue: document.getElementById('minSamplesValue'),
+        nodeInfo: document.getElementById('nodeInfo'),
+        featureImportanceList: document.getElementById('featureImportanceList'),
+        stat_currentDepth: document.getElementById('currentDepth'),
+        stat_totalNodes: document.getElementById('totalNodes'),
+        stat_leafNodes: document.getElementById('leafNodes'),
+        stat_avgImpurity: document.getElementById('avgImpurity'),
+      };
+      
+      // ========= ESTADO GLOBAL =========
+      let state = {
+        currentDataset: 'iris',
+        data: [],
+        tree: null,
+        selectedNodeId: null,
+        autoGrowInterval: null,
+        nodeIdCounter: 0,
+        minSamplesLeaf: 5,
+        maxDepth: 5,
+      };
+
+      // ========= CONFIGURACIÓN D3 =========
+      const svg = d3.select(dom.treeZone).append('svg').attr('width', '100%').attr('height', '100%');
+      const g = svg.append('g');
+      const treeLayout = d3.tree().nodeSize([120, 180]);
+      
+      // Tooltip
+      const tooltip = d3.select('body').append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
+      
+      // Configuración de zoom
+      const zoom = d3.zoom()
+        .scaleExtent([0.1, 3])
+        .on('zoom', (event) => {
+          g.attr('transform', event.transform);
+        });
+      svg.call(zoom);
+
+      // ========= GENERACIÓN DE DATOS =========
+      function generateSampleData() {
+        const samples = 150;
+        const data = [];
+        const { classes, target } = DATASETS[state.currentDataset];
+        
+        for (let i = 0; i < samples; i++) {
+          let sample = {};
+          let targetClass;
+          
+          if (state.currentDataset === 'iris') {
+            const petal_length = Math.random() * 6.5 + 0.5;
+            sample['petal_length'] = parseFloat(petal_length.toFixed(1));
+            sample['petal_width'] = parseFloat(Math.max(0.1, petal_length / 3.5 + (Math.random() - 0.5) * 0.5).toFixed(1));
+            sample['sepal_length'] = parseFloat(Math.max(4, petal_length * 1.2 + (Math.random() - 0.5)).toFixed(1));
+            sample['sepal_width'] = parseFloat(Math.max(2, 3.5 - petal_length / 4 + (Math.random() - 0.5)).toFixed(1));
+
+            if (petal_length < 2.5) targetClass = classes[0]; // setosa
+            else if (petal_length < 4.8) targetClass = classes[1]; // versicolor
+            else targetClass = classes[2]; // virginica
+          } else { // Titanic
+            sample.pclass = Math.ceil(Math.random() * 3);
+            sample.sex = Math.random() > 0.5 ? 1 : 0; // 1 for female, 0 for male
+            sample.age = Math.floor(Math.random() * 80 + 1);
+            sample.fare = parseFloat((Math.random() * 150).toFixed(2));
+            
+            // Lógica de supervivencia simplificada pero realista
+            const survivalScore = (sample.sex * 0.4) + ((4 - sample.pclass) * 0.2) + (sample.fare > 30 ? 0.3 : 0) + (sample.age < 15 ? 0.2 : 0);
+            targetClass = survivalScore > 0.5 ? classes[1] : classes[0];
+          }
+          
+          sample[target] = targetClass;
+          data.push(sample);
+        }
+        return data;
+      }
+
+      // ========= CÁLCULOS DE IMPUREZA =========
+      function calculateImpurity(data) {
+        if (data.length === 0) return 0;
+        
+        const metric = dom.impuritySelect.value;
+        const targetName = DATASETS[state.currentDataset].target;
+        
+        const counts = data.reduce((acc, row) => {
+          acc[row[targetName]] = (acc[row[targetName]] || 0) + 1;
+          return acc;
+        }, {});
+        
+        const total = data.length;
+        let impurity = 0;
+        
+        if (metric === 'gini') {
+          impurity = 1;
+          for (let key in counts) {
+            const prob = counts[key] / total;
+            impurity -= prob * prob;
+          }
+        } else { // entropy
+          for (let key in counts) {
+            const prob = counts[key] / total;
+            if (prob > 0) {
+              impurity -= prob * Math.log2(prob);
+            }
+          }
+        }
+        
+        return impurity;
+      }
+      
+      function calculateInformationGain(parentData, leftData, rightData) {
+        const parentImpurity = calculateImpurity(parentData);
+        const leftWeight = leftData.length / parentData.length;
+        const rightWeight = rightData.length / parentData.length;
+        const weightedChildImpurity = (leftWeight * calculateImpurity(leftData)) + (rightWeight * calculateImpurity(rightData));
+        return parentImpurity - weightedChildImpurity;
+      }
+
+      // ========= LÓGICA DEL ÁRBOL DE DECISIÓN =========
+      function findBestSplit(data) {
+        let bestGain = -1;
+        let bestFeature = null;
+        let bestThreshold = null;
+        const features = DATASETS[state.currentDataset].features;
+
+        for (const feature of features) {
+          const uniqueValues = [...new Set(data.map(row => row[feature]))].sort((a, b) => a - b);
+          
+          for (let i = 0; i < uniqueValues.length - 1; i++) {
+            const threshold = (uniqueValues[i] + uniqueValues[i + 1]) / 2;
+            const leftData = data.filter(row => row[feature] <= threshold);
+            const rightData = data.filter(row => row[feature] > threshold);
+
+            // Validar que ambos subconjuntos tengan suficientes muestras
+            if (leftData.length < state.minSamplesLeaf || rightData.length < state.minSamplesLeaf) {
+              continue;
+            }
+            
+            const gain = calculateInformationGain(data, leftData, rightData);
+            if (gain > bestGain) {
+              bestGain = gain;
+              bestFeature = feature;
+              bestThreshold = threshold;
+            }
+          }
+        }
+        
+        return { feature: bestFeature, threshold: bestThreshold, gain: bestGain };
+      }
+
+      function createNode(data) {
+        return {
+          id: state.nodeIdCounter++,
+          data: data,
+          children: null,
+          feature: null,
+          threshold: null,
+          gain: null,
+          isLeaf: true
+        };
+      }
+
+      function getNodeDepth(node, targetId, currentDepth = 0) {
+        if (node.id === targetId) return currentDepth;
+        
+        if (node.children) {
+          for (const child of node.children) {
+            const depth = getNodeDepth(child, targetId, currentDepth + 1);
+            if (depth !== -1) return depth;
+          }
+        }
+        
+        return -1;
+      }
+
+      function canSplitNode(node) {
+        const depth = getNodeDepth(state.tree, node.id);
+        return (
+          node.isLeaf && 
+          depth < state.maxDepth && 
+          node.data.length >= state.minSamplesLeaf * 2 && 
+          calculateImpurity(node.data) > 0.001
+        );
+      }
+
+      function splitNode(sourceNode = null) {
+        let nodeToSplit = null;
+
+        if (sourceNode && canSplitNode(sourceNode)) {
+          nodeToSplit = sourceNode;
+        } else {
+          // Encontrar el mejor nodo para dividir
+          let maxImpurity = -1;
+          
+          function findBestLeaf(node) {
+            if (canSplitNode(node)) {
+              const impurity = calculateImpurity(node.data);
+              if (impurity > maxImpurity) {
+                maxImpurity = impurity;
+                nodeToSplit = node;
+              }
+            }
+            
+            if (node.children) {
+              node.children.forEach(findBestLeaf);
+            }
+          }
+          
+          if (state.tree) findBestLeaf(state.tree);
+        }
+
+        if (!nodeToSplit) {
+          if (state.autoGrowInterval) stopAutoGrow();
+          return false;
+        }
+
+        const split = findBestSplit(nodeToSplit.data);
+        
+        if (split.gain <= 0.001 || !split.feature) {
+          if (state.autoGrowInterval) stopAutoGrow();
+          return false;
+        }
+        
+        const leftData = nodeToSplit.data.filter(row => row[split.feature] <= split.threshold);
+        const rightData = nodeToSplit.data.filter(row => row[split.feature] > split.threshold);
+
+        // Actualizar el nodo
+        nodeToSplit.feature = split.feature;
+        nodeToSplit.threshold = parseFloat(split.threshold.toFixed(2));
+        nodeToSplit.gain = split.gain;
+        nodeToSplit.isLeaf = false;
+        nodeToSplit.children = [
+          createNode(leftData),
+          createNode(rightData)
+        ];
+        
+        render();
+        return true;
+      }
+
+      // ========= FUNCIONES DE UTILIDAD =========
+      function getMajorityClass(data) {
+        if (data.length === 0) return 'N/A';
+        
+        const targetName = DATASETS[state.currentDataset].target;
+        const counts = data.reduce((acc, row) => {
+          acc[row[targetName]] = (acc[row[targetName]] || 0) + 1;
+          return acc;
+        }, {});
+        
+        return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+      }
+
+      // ========= RENDERIZADO CON D3 =========
+      function render() {
+        if (!state.tree) return;
+        
+        const root = d3.hierarchy(state.tree, d => d.children);
+        treeLayout(root);
+        
+        const duration = 750;
+
+        // Nodos
+        const nodes = g.selectAll('g.node')
+          .data(root.descendants(), d => d.data.id);
+
+        const nodeEnter = nodes.enter().append('g')
+          .attr('class', 'node')
+          .attr('transform', d => `translate(${root.y0 || 0},${root.x0 || 0})`)
+          .style('opacity', 0)
+          .on('click', (event, d) => {
+            event.stopPropagation();
+            state.selectedNodeId = d.data.id;
+            updateNodeInfo(d.data);
+            updateNodeVisuals();
+          })
+          .on('mouseover', handleMouseOver)
+          .on('mouseout', handleMouseOut);
+
+        // Círculos de los nodos
+        nodeEnter.append('circle')
+          .attr('r', 1e-6);
+
+        // Texto de las etiquetas
+        nodeEnter.append('text')
+          .attr('class', 'label-text')
+          .style('fill-opacity', 1e-6);
+
+        // Texto del número de muestras
+        nodeEnter.append('text')
+          .attr('class', 'samples-text')
+          .style('fill-opacity', 1e-6);
+
+        // Actualizar nodos existentes
+        const nodeUpdate = nodeEnter.merge(nodes);
+
+        nodeUpdate.transition()
+          .duration(duration)
+          .attr('transform', d => `translate(${d.y},${d.x})`)
+          .style('opacity', 1);
+
+        nodeUpdate.select('circle')
+          .transition()
+          .duration(duration)
+          .attr('r', d => d.depth === 0 ? 22 : (d.data.isLeaf ? 15 : 18))
+          .attr('fill', d => {
+            if (d.data.id === state.selectedNodeId) return getCSS('--accent3');
+            if (!d.data.isLeaf) return 'url(#grad-decision)';
+            return calculateImpurity(d.data.data) < 0.001 ? getCSS('--green') : getCSS('--green-light');
+          })
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 2)
+          .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))');
+        
+        nodeUpdate.select('text.label-text')
+          .transition()
+          .duration(duration)
+          .attr('dy', '.35em')
+          .attr('x', d => d.data.isLeaf ? 25 : -25)
+          .attr('text-anchor', d => d.data.isLeaf ? 'start' : 'end')
+          .style('fill', '#fff')
+          .style('font-size', '.8rem')
+          .style('font-weight', '600')
+          .style('text-shadow', '1px 1px 2px rgba(0,0,0,0.8)')
+          .style('fill-opacity', 1)
+          .text(d => d.data.isLeaf ? getMajorityClass(d.data.data) : `${d.data.feature} ≤ ${d.data.threshold}`);
+
+        nodeUpdate.select('text.samples-text')
+          .transition()
+          .duration(duration)
+          .attr('dy', '1.8em')
+          .attr('x', 0)
+          .attr('text-anchor', 'middle')
+          .style('fill', getCSS('--green-light'))
+          .style('font-size', '.65rem')
+          .style('fill-opacity', 1)
+          .text(d => `n=${d.data.data.length}`);
+
+        // Remover nodos que salen
+        const nodeExit = nodes.exit().transition()
+          .duration(duration)
+          .attr('transform', d => `translate(${root.y},${root.x})`)
+          .style('opacity', 0)
+          .remove();
+        
+        nodeExit.select('circle').attr('r', 1e-6);
+        nodeExit.select('text').style('fill-opacity', 1e-6);
+
+        // Enlaces
+        const links = g.selectAll('path.link')
+          .data(root.links(), d => d.target.data.id);
+
+        const linkEnter = links.enter().insert('path', 'g')
+          .attr('class', 'link')
+          .attr('d', d => {
+            const o = { x: root.x0 || 0, y: root.y0 || 0 };
+            return d3.linkHorizontal()({ source: o, target: o });
+          });
+
+        linkEnter.merge(links).transition()
+          .duration(duration)
+          .attr('d', d3.linkHorizontal().x(d => d.y).y(d => d.x))
+          .attr('stroke', getCSS('--green-light'))
+          .attr('stroke-width', 2)
+          .attr('fill', 'none')
+          .attr('opacity', 0.8);
+        
+        links.exit().transition()
+          .duration(duration)
+          .attr('d', d => {
+            const o = { x: root.x, y: root.y };
+            return d3.linkHorizontal()({ source: o, target: o });
+          })
+          .remove();
+
+        // Almacenar las posiciones para la próxima transición
+        root.descendants().forEach(d => {
+          d.x0 = d.x;
+          d.y0 = d.y;
+        });
+
+        updateStats();
+        updateFeatureImportance();
+      }
+
+      // ========= MANEJO DE EVENTOS DEL MOUSE =========
+      function handleMouseOver(event, d) {
+        const impurity = calculateImpurity(d.data.data);
+        const majority = getMajorityClass(d.data.data);
+        
+        tooltip.transition()
+          .duration(200)
+          .style('opacity', 0.9);
+        
+        tooltip.html(`
+          <strong>Nodo ${d.data.id}</strong><br/>
+          Muestras: ${d.data.data.length}<br/>
+          Impureza: ${impurity.toFixed(3)}<br/>
+          Clase mayoritaria: <strong>${majority}</strong>
+          ${!d.data.isLeaf ? `<br/>División: ${d.data.feature} ≤ ${d.data.threshold}` : ''}
+        `)
+          .style('left', (event.pageX) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+      }
+
+      function handleMouseOut() {
+        tooltip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      }
+
+      // ========= ACTUALIZACIÓN DE ESTADÍSTICAS =========
+      function updateStats() {
+        if (!state.tree) return;
+
+        let totalNodes = 0;
+        let leafNodes = 0;
+        let maxDepth = 0;
+        let totalImpurity = 0;
+        let leafCount = 0;
+
+        function traverse(node, depth = 0) {
+          totalNodes++;
+          maxDepth = Math.max(maxDepth, depth);
+          
+          if (node.isLeaf) {
+            leafNodes++;
+            totalImpurity += calculateImpurity(node.data);
+            leafCount++;
+          }
+          
+          if (node.children) {
+            node.children.forEach(child => traverse(child, depth + 1));
+          }
+        }
+
+        traverse(state.tree);
+
+        dom.stat_currentDepth.textContent = maxDepth + 1;
+        dom.stat_totalNodes.textContent = totalNodes;
+        dom.stat_leafNodes.textContent = leafNodes;
+        dom.stat_avgImpurity.textContent = leafCount > 0 ? (totalImpurity / leafCount).toFixed(3) : '0.000';
+      }
+
+      // ========= ACTUALIZACIÓN DE INFORMACIÓN DEL NODO =========
+      function updateNodeInfo(node) {
+        const impurity = calculateImpurity(node.data);
+        const majority = getMajorityClass(node.data);
+        const targetName = DATASETS[state.currentDataset].target;
+        
+        const classCounts = node.data.reduce((acc, row) => {
+          acc[row[targetName]] = (acc[row[targetName]] || 0) + 1;
+          return acc;
+        }, {});
+
+        let infoHTML = `
+          <h4>Nodo ${node.id}</h4>
+          <p><strong>Muestras:</strong> ${node.data.length}</p>
+          <p><strong>Impureza:</strong> ${impurity.toFixed(3)}</p>
+          <p><strong>Clase mayoritaria:</strong> ${majority}</p>
+        `;
+
+        if (!node.isLeaf) {
+          infoHTML += `
+            <p><strong>División:</strong> ${node.feature} ≤ ${node.threshold}</p>
+            <p><strong>Ganancia:</strong> ${node.gain.toFixed(3)}</p>
+          `;
+        }
+
+        infoHTML += '<p><strong>Distribución de clases:</strong></p>';
+        for (const [className, count] of Object.entries(classCounts)) {
+          const percentage = ((count / node.data.length) * 100).toFixed(1);
+          infoHTML += `<div style="margin-left: 10px;">${className}: ${count} (${percentage}%)</div>`;
+        }
+
+        dom.nodeInfo.innerHTML = infoHTML;
+      }
+
+      // ========= ACTUALIZACIÓN DE VISUALES DE NODOS =========
+      function updateNodeVisuals() {
+        g.selectAll('circle')
+          .attr('fill', d => {
+            if (d.data.id === state.selectedNodeId) return getCSS('--accent3');
+            if (!d.data.isLeaf) return 'url(#grad-decision)';
+            return calculateImpurity(d.data.data) < 0.001 ? getCSS('--green') : getCSS('--green-light');
+          });
+      }
+
+      // ========= IMPORTANCIA DE CARACTERÍSTICAS =========
+      function updateFeatureImportance() {
+        if (!state.tree) return;
+
+        const featureImportance = {};
+        const features = DATASETS[state.currentDataset].features;
+        
+        features.forEach(feature => {
+          featureImportance[feature] = 0;
+        });
+
+        function calculateImportance(node) {
+          if (!node.isLeaf && node.gain) {
+            featureImportance[node.feature] += node.gain * node.data.length;
+          }
+          
+          if (node.children) {
+            node.children.forEach(calculateImportance);
+          }
+        }
+
+        calculateImportance(state.tree);
+
+        // Normalizar
+        const maxImportance = Math.max(...Object.values(featureImportance));
+        if (maxImportance > 0) {
+          for (const feature in featureImportance) {
+            featureImportance[feature] /= maxImportance;
+          }
+        }
+
+        // Renderizar
+        const importanceHTML = features.map(feature => {
+          const importance = featureImportance[feature];
+          return `
+            <div class="feature-bar">
+              <div class="feature-name">${feature}</div>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: ${importance * 100}%"></div>
+              </div>
+              <div class="bar-value">${(importance * 100).toFixed(0)}%</div>
+            </div>
+          `;
+        }).join('');
+
+        dom.featureImportanceList.innerHTML = importanceHTML;
+      }
+
+      // ========= FUNCIONES DE CONTROL =========
+      function initializeTree() {
+        state.data = generateSampleData();
+        state.tree = createNode(state.data);
+        state.nodeIdCounter = 1;
+        state.selectedNodeId = null;
+        render();
+      }
+
+      function resetTree() {
+        if (state.autoGrowInterval) stopAutoGrow();
+        state.nodeIdCounter = 0;
+        initializeTree();
+      }
+
+      function pruneTree() {
+        if (!state.tree) return;
+
+        let maxDepth = 0;
+        const nodesToPrune = [];
+
+        function findMaxDepth(node, depth = 0) {
+          maxDepth = Math.max(maxDepth, depth);
+          if (node.children) {
+            node.children.forEach(child => findMaxDepth(child, depth + 1));
+          }
+        }
+
+        function findNodesToPrune(node, depth = 0) {
+          if (depth === maxDepth - 1 && node.children) {
+            nodesToPrune.push(node);
+          }
+          if (node.children) {
+            node.children.forEach(child => findNodesToPrune(child, depth + 1));
+          }
+        }
+
+        findMaxDepth(state.tree);
+        if (maxDepth > 0) {
+          findNodesToPrune(state.tree);
+          nodesToPrune.forEach(node => {
+            node.children = null;
+            node.isLeaf = true;
+            node.feature = null;
+            node.threshold = null;
+            node.gain = null;
+          });
+          render();
+        }
+      }
+
+      function startAutoGrow() {
+        if (state.autoGrowInterval) return;
+        
+        dom.autoGrowBtn.textContent = '⏸️ Pausar Auto';
+        dom.autoGrowBtn.classList.remove('info');
+        dom.autoGrowBtn.classList.add('warning');
+        
+        state.autoGrowInterval = setInterval(() => {
+          if (!splitNode()) {
+            stopAutoGrow();
+          }
+        }, 1500);
+      }
+
+      function stopAutoGrow() {
+        if (state.autoGrowInterval) {
+          clearInterval(state.autoGrowInterval);
+          state.autoGrowInterval = null;
+          
+          dom.autoGrowBtn.textContent = '🚀 Crecimiento Auto';
+          dom.autoGrowBtn.classList.remove('warning');
+          dom.autoGrowBtn.classList.add('info');
+        }
+      }
+
+      function exportToJSON() {
+        if (!state.tree) return;
+        
+        const treeData = {
+          tree: state.tree,
+          dataset: state.currentDataset,
+          config: {
+            impurityMetric: dom.impuritySelect.value,
+            maxDepth: state.maxDepth,
+            minSamplesLeaf: state.minSamplesLeaf
+          },
+          timestamp: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(treeData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `decision_tree_${state.currentDataset}_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // ========= EVENT LISTENERS =========
+      dom.splitBtn.addEventListener('click', () => splitNode());
+      dom.autoGrowBtn.addEventListener('click', () => {
+        if (state.autoGrowInterval) {
+          stopAutoGrow();
+        } else {
+          startAutoGrow();
+        }
+      });
+      dom.pruneBtn.addEventListener('click', pruneTree);
+      dom.resetBtn.addEventListener('click', resetTree);
+      dom.exportJsonBtn.addEventListener('click', exportToJSON);
+
+      dom.datasetSelect.addEventListener('change', (e) => {
+        state.currentDataset = e.target.value;
+        resetTree();
+      });
+
+      dom.impuritySelect.addEventListener('change', () => {
+        if (state.tree) render();
+      });
+
+      dom.maxDepthSlider.addEventListener('input', (e) => {
+        state.maxDepth = parseInt(e.target.value);
+        dom.maxDepthValue.textContent = state.maxDepth;
+      });
+
+      dom.minSamplesSlider.addEventListener('input', (e) => {
+        state.minSamplesLeaf = parseInt(e.target.value);
+        dom.minSamplesValue.textContent = state.minSamplesLeaf;
+      });
+
+      // Limpiar selección al hacer clic en el fondo
+      svg.on('click', () => {
+        state.selectedNodeId = null;
+        dom.nodeInfo.innerHTML = '<h4>Información del Nodo</h4><p>Haz clic en un nodo para ver sus detalles.</p>';
+        updateNodeVisuals();
+      });
+
+      // ========= GRADIENTES SVG =========
+      const defs = svg.append('defs');
+      
+      const gradDecision = defs.append('linearGradient')
+        .attr('id', 'grad-decision')
+        .attr('x1', '0%').attr('y1', '0%')
+        .attr('x2', '100%').attr('y2', '100%');
+      
+      gradDecision.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', getCSS('--accent'))
+        .attr('stop-opacity', 1);
+      
+      gradDecision.append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', getCSS('--accent2'))
+        .attr('stop-opacity', 1);
+
+      // ========= INICIALIZACIÓN =========
+      initializeTree();
+      
+      // Centrar el árbol inicialmente
+      setTimeout(() => {
+        const bounds = g.node().getBBox();
+        const parent = svg.node().getBoundingClientRect();
+        const fullWidth = parent.width;
+        const fullHeight = parent.height;
+        const width = bounds.width;
+        const height = bounds.height;
+        const midX = bounds.x + width / 2;
+        const midY = bounds.y + height / 2;
+        
+        const scale = 0.8 / Math.max(width / fullWidth, height / fullHeight);
+        const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
+        
+        svg.transition()
+          .duration(750)
+          .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+      }, 100);
+    });
+  </script>
+</body>
+</html>
