@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel o Tijera - Aprende Condicionales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --accent-primary: #00ffdd;
+            --accent-secondary: #f000ff;
+            --accent-win: #4caf50;
+            --accent-lose: #f44336;
+            --accent-tie: #ffeb3b;
+            --text-primary: #e0e0e0;
+            --border-glow: 0 0 15px rgba(0, 255, 221, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1a2e 100%);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-primary);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--border-glow), 0 5px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent-primary);
+            text-shadow: 2px 2px var(--accent-secondary);
+            font-size: clamp(1.5em, 5vw, 2.2em);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--accent-secondary);
+            font-size: 0.9em;
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+        
+        #scoreboard {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        .score-box { padding: 10px; }
+        .score-box .score { font-size: 2em; font-weight: 700; }
+        #player-score { color: var(--accent-win); }
+        #computer-score { color: var(--accent-lose); }
+        #tie-score { color: var(--accent-tie); }
+
+        #game-arena {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 25px;
+            min-height: 200px;
+            gap: 20px;
+        }
+        
+        .player-area {
+            width: 40%;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .player-area h2 { 
+            font-size: 1.2em; 
+            margin-bottom: 15px; 
+        }
+        
+        .choice-display {
+            font-size: 6em;
+            height: 1.2em;
+            line-height: 1.2em;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .player-area.winner { 
+            border: 2px solid var(--accent-win); 
+            box-shadow: 0 0 20px var(--accent-win);
+            transform: scale(1.05);
+        }
+        .player-area.loser { 
+            border: 2px solid var(--accent-lose); 
+            box-shadow: 0 0 20px var(--accent-lose);
+            opacity: 0.7;
+        }
+        .player-area.tie { 
+            border: 2px solid var(--accent-tie); 
+            box-shadow: 0 0 20px var(--accent-tie);
+        }
+
+        /* Indicador de número aleatorio */
+        .random-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--accent-secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .random-indicator.visible {
+            opacity: 1;
+        }
+
+        .random-process {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: var(--accent-primary);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        .random-process.visible {
+            opacity: 1;
+        }
+        
+        #result-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            min-height: 1.5em;
+            margin-bottom: 25px;
+            animation: fadeIn 0.5s;
+        }
+        
+        #choices-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .choice-btn {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1em;
+            font-weight: 700;
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-primary);
+            border-radius: 10px;
+            padding: 15px;
+            width: 140px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .choice-btn:hover:not(:disabled) {
+            background: var(--accent-primary);
+            color: var(--bg-secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 255, 221, 0.4);
+        }
+        
+        .choice-btn:active:not(:disabled) {
+            transform: translateY(-2px);
+        }
+        
+        .choice-btn:disabled {
+            border-color: #666;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        /* Panel de código didáctico mejorado */
+        #code-panel {
+            background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            text-align: left;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.6s ease-out;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        #code-panel.visible {
+            opacity: 1;
+            max-height: 800px; /* Aumentado para dar espacio a todo el código */
+        }
+        
+        #code-panel h3 { 
+            color: var(--accent-secondary); 
+            margin-bottom: 15px; 
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .code-section {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+        }
+        
+        .code-section h4 {
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .code-line { 
+            margin: 3px 0; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            white-space: pre-wrap;
+            transition: all 0.3s ease;
+        }
+        
+        .highlight { 
+            background: linear-gradient(90deg, rgba(255, 235, 59, 0.2), rgba(255, 235, 59, 0.1));
+            border-left: 3px solid var(--accent-tie);
+            transform: scale(1.02);
+        }
+
+        .comment { color: #888; font-style: italic; }
+        .keyword { color: #ff6b6b; font-weight: bold; }
+        .string { color: #4ecdc4; }
+        .number { color: #ffd93d; }
+
+        #restart-button { 
+            margin-top: 20px; 
+            display: none; 
+            background-color: var(--accent-secondary); 
+            border-color: var(--accent-secondary);
+            color: white;
+        }
+
+        #restart-button:hover {
+            background-color: #ff00cc;
+            border-color: #ff00cc;
+        }
+
+        #reset-game {
+            margin-left: 10px;
+            background-color: #ff6b6b;
+            border-color: #ff6b6b;
+            color: white;
+        }
+
+        #reset-game:hover {
+            background-color: #ff5252;
+            border-color: #ff5252;
+        }
+
+        /* Estadísticas adicionales */
+        #stats-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.9em;
+        }
+
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 1.5em; font-weight: bold; color: var(--accent-primary); }
+
+        /* Panel de reglas */
+        #rules-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        #rules-panel h3 { color: var(--accent-primary); margin-bottom: 10px; text-align: center; }
+        .rules-list { list-style: none; padding: 0; }
+        .rules-list li { margin: 8px 0; padding: 5px 0; border-bottom: 1px dotted rgba(255,255,255,0.2); }
+        .rules-list li:last-child { border-bottom: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes thinking {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(0.9); }
+            75% { transform: rotate(-5deg) scale(1.1); }
+        }
+        .thinking { animation: thinking 0.8s ease-in-out infinite; }
+
+        /* Efectos de partículas */
+        .particle-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: var(--accent-win);
+            border-radius: 50%;
+            animation: particle-float 2s ease-out forwards;
+        }
+        @keyframes particle-float {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-150px) scale(0); }
+        }
+
+        /* Responsivo mejorado */
+        @media (max-width: 768px) {
+            #game-arena { flex-direction: column; gap: 15px; }
+            .player-area { width: 90%; }
+            .choice-display { font-size: 4em; }
+            #choices-container { gap: 10px; }
+            .choice-btn { width: 120px; padding: 12px; font-size: 1em; }
+            #stats-panel { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <header>
+            <h1>Piedra, Papel o Tijera</h1>
+            <p class="subtitle">🎯 Aprende Condicionales y Números Aleatorios</p>
+        </header>
+
+        <section id="scoreboard">
+            <div class="score-box">
+                <div>JUGADOR</div>
+                <div class="score" id="player-score">0</div>
+            </div>
+            <div class="score-box">
+                <div>EMPATES</div>
+                <div class="score" id="tie-score">0</div>
+            </div>
+            <div class="score-box">
+                <div>COMPUTADORA</div>
+                <div class="score" id="computer-score">0</div>
+            </div>
+        </section>
+
+        <section id="game-arena">
+            <div class="player-area" id="player-arena">
+                <h2>TU JUGADA</h2>
+                <div class="choice-display" id="player-choice-display">?</div>
+                <div class="particle-container"></div>
+            </div>
+            <div class="player-area" id="computer-arena">
+                <h2>COMPUTADORA</h2>
+                <div class="choice-display" id="computer-choice-display">?</div>
+                <div class="random-indicator" id="random-indicator">Nº: ?</div>
+                <div class="random-process" id="random-process">
+                    <div>Generando número...</div>
+                    <div id="random-steps"></div>
+                </div>
+            </div>
+        </section>
+
+        <p id="result-text">Elige tu jugada para empezar...</p>
+
+        <section id="choices-container">
+            <button class="choice-btn" data-choice="0">✊ Piedra</button>
+            <button class="choice-btn" data-choice="1">🖐️ Papel</button>
+            <button class="choice-btn" data-choice="2">✌️ Tijera</button>
+        </section>
+        
+        <div style="margin-top: 20px;">
+            <button class="choice-btn" id="restart-button">🎮 Jugar Otra Ronda</button>
+            <button class="choice-btn" id="reset-game">🔄 Reiniciar Juego</button>
+        </div>
+        
+        <section id="stats-panel">
+            <div class="stat-item"><div class="stat-value" id="total-games">0</div><div>Partidas</div></div>
+            <div class="stat-item"><div class="stat-value" id="win-rate">0%</div><div>% Victorias</div></div>
+            <div class="stat-item"><div class="stat-value" id="streak">0</div><div>Racha Actual</div></div>
+            <div class="stat-item"><div class="stat-value" id="best-streak">0</div><div>Mejor Racha</div></div>
+        </section>
+
+        <section id="rules-panel">
+            <h3>📋 Reglas del Juego</h3>
+            <ul class="rules-list">
+                <li>✊ <strong>Piedra</strong> aplasta ✌️ <strong>Tijera</strong></li>
+                <li>🖐️ <strong>Papel</strong> envuelve ✊ <strong>Piedra</strong></li>
+                <li>✌️ <strong>Tijera</strong> corta 🖐️ <strong>Papel</strong></li>
+                <li>🤝 Misma jugada = <strong>Empate</strong></li>
+            </ul>
+        </section>
+        
+        <section id="code-panel">
+            <h3>📝 El Código Detrás de Esta Ronda</h3>
+            <div class="code-section"><h4>🎲 1. Generación del Número Aleatorio:</h4><div id="random-code"></div></div>
+            <div class="code-section"><h4>⚖️ 2. Lógica de Condicionales (if/else):</h4><div id="conditional-code"></div></div>
+            <div class="code-section"><h4>🏆 3. Determinación del Resultado:</h4><div id="result-code"></div></div>
+            <div class="code-section"><h4>🔧 4. Función de Comparación Eficiente:</h4><div id="comparison-code"></div></div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. CONSTANTES Y CONFIGURACIÓN ---
+            const CHOICES = Object.freeze([
+                { name: 'Piedra', emoji: '✊', id: 'rock' },
+                { name: 'Papel',  emoji: '🖐️', id: 'paper' },
+                { name: 'Tijera', emoji: '✌️', id: 'scissors' }
+            ]);
+
+            const WINNING_RULES = Object.freeze({
+                0: 2, // Piedra (0) vence a Tijera (2)
+                1: 0, // Papel (1) vence a Piedra (0)
+                2: 1  // Tijera (2) vence a Papel (1)
+            });
+
+            const GAME_STATES = Object.freeze({ WAITING: 'waiting', PLAYING: 'playing', SHOWING_RESULT: 'showing_result' });
+            const RESULT_TYPES = Object.freeze({ PLAYER_WIN: 'player_win', COMPUTER_WIN: 'computer_win', TIE: 'tie' });
+
+            // --- 2. REFERENCIAS A ELEMENTOS DEL DOM ---
+            const elements = {
+                playerScore: document.getElementById('player-score'),
+                computerScore: document.getElementById('computer-score'),
+                tieScore: document.getElementById('tie-score'),
+                playerArena: document.getElementById('player-arena'),
+                computerArena: document.getElementById('computer-arena'),
+                playerChoiceDisplay: document.getElementById('player-choice-display'),
+                computerChoiceDisplay: document.getElementById('computer-choice-display'),
+                playerParticleContainer: document.querySelector('#player-arena .particle-container'),
+                randomIndicator: document.getElementById('random-indicator'),
+                randomProcess: document.getElementById('random-process'),
+                randomSteps: document.getElementById('random-steps'),
+                resultText: document.getElementById('result-text'),
+                choiceButtons: document.querySelectorAll('.choice-btn[data-choice]'),
+                restartButton: document.getElementById('restart-button'),
+                resetButton: document.getElementById('reset-game'),
+                codePanel: document.getElementById('code-panel'),
+                randomCode: document.getElementById('random-code'),
+                conditionalCode: document.getElementById('conditional-code'),
+                resultCode: document.getElementById('result-code'),
+                comparisonCode: document.getElementById('comparison-code'),
+                totalGames: document.getElementById('total-games'),
+                winRate: document.getElementById('win-rate'),
+                streak: document.getElementById('streak'),
+                bestStreak: document.getElementById('best-streak')
+            };
+
+            // --- 3. ESTADO DEL JUEGO ---
+            let gameState = {
+                currentState: GAME_STATES.WAITING,
+                scores: { player: 0, computer: 0, tie: 0 },
+                totalGames: 0,
+                currentStreak: 0,
+                bestStreak: 0,
+                lastResult: null,
+            };
+
+            // --- 4. FUNCIONES DE LÓGICA DE JUEGO ---
+
+            function determineWinner(playerChoice, computerChoice) {
+                if (playerChoice === computerChoice) return RESULT_TYPES.TIE;
+                if (WINNING_RULES[playerChoice] === computerChoice) return RESULT_TYPES.PLAYER_WIN;
+                return RESULT_TYPES.COMPUTER_WIN;
+            }
+
+            function generateComputerChoice() {
+                const randomValue = Math.random();
+                const scaledValue = randomValue * CHOICES.length;
+                const finalChoice = Math.floor(scaledValue);
+                return {
+                    choice: finalChoice,
+                    randomData: {
+                        randomValue,
+                        scaledValue,
+                        choice: finalChoice,
+                    }
+                };
+            }
+            
+            function getWinExplanation(winner, loser) {
+                const explanations = {
+                    '0-2': 'La Piedra aplasta la Tijera',
+                    '1-0': 'El Papel envuelve la Piedra',
+                    '2-1': 'La Tijera corta el Papel'
+                };
+                return explanations[`${winner}-${loser}`] || 'Regla desconocida';
+            }
+
+            function updateGameData(result) {
+                gameState.totalGames++;
+                gameState.lastResult = result;
+
+                switch (result) {
+                    case RESULT_TYPES.PLAYER_WIN:
+                        gameState.scores.player++;
+                        gameState.currentStreak++;
+                        if (gameState.currentStreak > gameState.bestStreak) {
+                            gameState.bestStreak = gameState.currentStreak;
+                        }
+                        break;
+                    case RESULT_TYPES.COMPUTER_WIN:
+                        gameState.scores.computer++;
+                        gameState.currentStreak = 0;
+                        break;
+                    case RESULT_TYPES.TIE:
+                        gameState.scores.tie++;
+                        break;
+                }
+            }
+            
+            // --- 5. FUNCIONES DE INTERFAZ DE USUARIO ---
+
+            function updateScoreboard() {
+                elements.playerScore.textContent = gameState.scores.player;
+                elements.computerScore.textContent = gameState.scores.computer;
+                elements.tieScore.textContent = gameState.scores.tie;
+            }
+
+            function updateStats() {
+                elements.totalGames.textContent = gameState.totalGames;
+                const winRate = gameState.totalGames > 0 ? Math.round((gameState.scores.player / gameState.totalGames) * 100) : 0;
+                elements.winRate.textContent = `${winRate}%`;
+                elements.streak.textContent = gameState.currentStreak;
+                elements.bestStreak.textContent = gameState.bestStreak;
+            }
+
+            function setButtonsState(disabled) {
+                elements.choiceButtons.forEach(btn => btn.disabled = disabled);
+                elements.restartButton.style.display = disabled ? 'inline-block' : 'none';
+            }
+
+            function resetArenaStyles() {
+                const classes = ['winner', 'loser', 'tie', 'thinking'];
+                elements.playerArena.classList.remove(...classes);
+                elements.computerArena.classList.remove(...classes);
+                elements.computerChoiceDisplay.classList.remove(...classes);
+                elements.randomIndicator.classList.remove('visible');
+            }
+
+            function createParticleEffect() {
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    particle.style.left = `${x}%`;
+                    particle.style.top = `${y}%`;
+                    elements.playerParticleContainer.appendChild(particle);
+                    setTimeout(() => particle.remove(), 2000);
+                }
+            }
+
+            // --- 6. FUNCIONES DE VISUALIZACIÓN DE CÓDIGO ---
+
+            function displayCode(playerChoice, computerChoice, randomData, result) {
+                let explanation = '';
+                if(result === RESULT_TYPES.PLAYER_WIN) explanation = getWinExplanation(playerChoice, computerChoice);
+                if(result === RESULT_TYPES.COMPUTER_WIN) explanation = getWinExplanation(computerChoice, playerChoice);
+
+                displayRandomCode(randomData);
+                displayConditionalCode(playerChoice, computerChoice, result);
+                displayResultCode(result, explanation);
+                displayComparisonCode(playerChoice, computerChoice, result);
+                elements.codePanel.classList.add('visible');
+            }
+
+            function displayRandomCode(randomData) {
+                elements.randomCode.innerHTML = `
+<div class="code-line comment">// Genera un número decimal entre 0 (incluido) y 1 (excluido)</div>
+<div class="code-line highlight"><span class="keyword">const</span> randomValue = <span class="string">Math.random()</span>; <span class="comment">// Valor: ${randomData.randomValue.toFixed(4)}</span></div>
+<div class="code-line comment">// Lo multiplicamos por 3 (el número de opciones)</div>
+<div class="code-line highlight"><span class="keyword">const</span> scaledValue = randomValue * <span class="number">3</span>; <span class="comment">// Valor: ${randomData.scaledValue.toFixed(4)}</span></div>
+<div class="code-line comment">// Tomamos la parte entera para obtener 0, 1 o 2</div>
+<div class="code-line highlight"><span class="keyword">const</span> finalChoice = <span class="string">Math.floor</span>(scaledValue); <span class="comment">// Valor: ${randomData.choice}</span></div>`;
+            }
+
+            function displayConditionalCode(player, comp, result) {
+                const isTie = result === RESULT_TYPES.TIE;
+                const pWins = result === RESULT_TYPES.PLAYER_WIN;
+                const cWins = result === RESULT_TYPES.COMPUTER_WIN;
+
+                elements.conditionalCode.innerHTML = `
+<div class="code-line comment">// player = ${player} (${CHOICES[player].name}), computer = ${comp} (${CHOICES[comp].name})</div>
+<div class="code-line ${isTie ? 'highlight' : ''}"><span class="keyword">if</span> (player === comp) {</div>
+<div class="code-line ${isTie ? 'highlight' : ''}">  <span class="comment">// Es un empate</span></div>
+<div class="code-line ${isTie ? 'highlight' : ''}">} <span class="keyword">else if</span> (</div>
+<div class="code-line ${pWins && player === 0 ? 'highlight' : ''}">  (player === <span class="number">0</span> && comp === <span class="number">2</span>) || <span class="comment">// Piedra vs Tijera</span></div>
+<div class="code-line ${pWins && player === 1 ? 'highlight' : ''}">  (player === <span class="number">1</span> && comp === <span class="number">0</span>) || <span class="comment">// Papel vs Piedra</span></div>
+<div class="code-line ${pWins && player === 2 ? 'highlight' : ''}">  (player === <span class="number">2</span> && comp === <span class="number">1</span>)  <span class="comment">// Tijera vs Papel</span></div>
+<div class="code-line ${pWins ? 'highlight' : ''}">) {</div>
+<div class="code-line ${pWins ? 'highlight' : ''}">  <span class="comment">// El jugador gana</span></div>
+<div class="code-line ${pWins ? 'highlight' : ''}">} <span class="keyword">else</span> {</div>
+<div class="code-line ${cWins ? 'highlight' : ''}">  <span class="comment">// La computadora gana</span></div>
+<div class="code-line ${cWins ? 'highlight' : ''}">}</div>`;
+            }
+
+            function displayResultCode(result, explanation) {
+                 elements.resultCode.innerHTML = `
+<div class="code-line comment">// Usamos un switch para manejar el resultado</div>
+<div class="code-line"><span class="keyword">switch</span>(result) {</div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}">  <span class="keyword">case</span> <span class="string">'player_win'</span>:</div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}">    <span class="comment">// Actualizar UI para victoria: "${explanation}"</span></div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}">    <span class="keyword">break</span>;</div>
+<div class="code-line ${result === RESULT_TYPES.COMPUTER_WIN ? 'highlight' : ''}">  <span class="keyword">case</span> <span class="string">'computer_win'</span>:</div>
+<div class="code-line ${result === RESULT_TYPES.COMPUTER_WIN ? 'highlight' : ''}">    <span class="comment">// Actualizar UI para derrota: "${explanation}"</span></div>
+<div class="code-line ${result === RESULT_TYPES.COMPUTER_WIN ? 'highlight' : ''}">    <span class="keyword">break</span>;</div>
+<div class="code-line ${result === RESULT_TYPES.TIE ? 'highlight' : ''}">  <span class="keyword">case</span> <span class="string">'tie'</span>:</div>
+<div class="code-line ${result === RESULT_TYPES.TIE ? 'highlight' : ''}">    <span class="comment">// Actualizar UI para empate</span></div>
+<div class="code-line ${result === RESULT_TYPES.TIE ? 'highlight' : ''}">    <span class="keyword">break</span>;</div>
+<div class="code-line">}</div>`;
+            }
+
+            function displayComparisonCode(player, comp, result) {
+                elements.comparisonCode.innerHTML = `
+<div class="code-line comment">// Una forma más limpia usando un objeto de reglas.</div>
+<div class="code-line"><span class="keyword">const</span> WINNING_RULES = { <span class="number">0</span>: <span class="number">2</span>, <span class="number">1</span>: <span class="number">0</span>, <span class="number">2</span>: <span class="number">1</span> };</div>
+<div class="code-line"></div>
+<div class="code-line ${result === RESULT_TYPES.TIE ? 'highlight' : ''}"><span class="keyword">if</span> (player === comp) { <span class="keyword">return</span> <span class="string">'EMPATE'</span>; }</div>
+<div class="code-line"></div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}"><span class="keyword">if</span> (WINNING_RULES[player] === comp) {</div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}">  <span class="comment">// WINNING_RULES[${player}] es ${WINNING_RULES[player]}. Esto es igual a ${comp}, así que el jugador gana.</span></div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}">  <span class="keyword">return</span> <span class="string">'VICTORIA_JUGADOR'</span>;</div>
+<div class="code-line ${result === RESULT_TYPES.PLAYER_WIN ? 'highlight' : ''}">}</div>
+<div class="code-line"></div>
+<div class="code-line ${result === RESULT_TYPES.COMPUTER_WIN ? 'highlight' : ''}"><span class="comment">// Si no es empate y no gana el jugador, gana la computadora.</span></div>
+<div class="code-line ${result === RESULT_TYPES.COMPUTER_WIN ? 'highlight' : ''}"><span class="keyword">return</span> <span class="string">'VICTORIA_COMPUTADORA'</span>;</div>
+                `;
+            }
+
+            // --- 7. FLUJO PRINCIPAL DEL JUEGO ---
+
+            function playRound(playerChoice) {
+                if (gameState.currentState !== GAME_STATES.WAITING) return;
+                gameState.currentState = GAME_STATES.PLAYING;
+
+                setButtonsState(true);
+                resetArenaStyles();
+
+                elements.playerChoiceDisplay.textContent = CHOICES[playerChoice].emoji;
+                elements.computerChoiceDisplay.textContent = '?';
+                elements.computerChoiceDisplay.classList.add('thinking');
+
+                setTimeout(() => {
+                    const { choice: computerChoice, randomData } = generateComputerChoice();
+                    const result = determineWinner(playerChoice, computerChoice);
+                    
+                    updateGameData(result);
+                    
+                    // Actualizaciones de UI tras el cálculo
+                    elements.computerChoiceDisplay.classList.remove('thinking');
+                    elements.computerChoiceDisplay.textContent = CHOICES[computerChoice].emoji;
+                    elements.randomIndicator.textContent = `Nº: ${randomData.choice}`;
+                    elements.randomIndicator.classList.add('visible');
+
+                    updateScoreboard();
+                    updateStats();
+                    
+                    let resultMessage = '';
+                    switch (result) {
+                        case RESULT_TYPES.PLAYER_WIN:
+                            resultMessage = `¡Ganaste! ${getWinExplanation(playerChoice, computerChoice)}`;
+                            elements.playerArena.classList.add('winner');
+                            elements.computerArena.classList.add('loser');
+                            createParticleEffect();
+                            break;
+                        case RESULT_TYPES.COMPUTER_WIN:
+                            resultMessage = `Perdiste. ${getWinExplanation(computerChoice, playerChoice)}`;
+                            elements.playerArena.classList.add('loser');
+                            elements.computerArena.classList.add('winner');
+                            break;
+                        case RESULT_TYPES.TIE:
+                            resultMessage = "¡Es un empate!";
+                            elements.playerArena.classList.add('tie');
+                            elements.computerArena.classList.add('tie');
+                            break;
+                    }
+                    elements.resultText.textContent = resultMessage;
+                    
+                    displayCode(playerChoice, computerChoice, randomData, result);
+
+                    gameState.currentState = GAME_STATES.SHOWING_RESULT;
+
+                }, 1500); // Simula el "pensamiento" de la máquina
+            }
+
+            function restartRound() {
+                gameState.currentState = GAME_STATES.WAITING;
+                resetArenaStyles();
+                setButtonsState(false);
+                elements.playerChoiceDisplay.textContent = '?';
+                elements.computerChoiceDisplay.textContent = '?';
+                elements.resultText.textContent = "Elige tu jugada para la siguiente ronda...";
+                elements.codePanel.classList.remove('visible');
+                elements.playerParticleContainer.innerHTML = ''; // Limpia las partículas
+            }
+
+            function resetGame() {
+                gameState.scores = { player: 0, computer: 0, tie: 0 };
+                gameState.totalGames = 0;
+                gameState.currentStreak = 0;
+                gameState.bestStreak = 0;
+                updateScoreboard();
+                updateStats();
+                restartRound();
+                elements.resultText.textContent = "Juego reiniciado. ¡Elige tu jugada!";
+            }
+
+            // --- 8. INICIALIZACIÓN ---
+            elements.choiceButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const choice = parseInt(button.dataset.choice, 10);
+                    playRound(choice);
+                });
+            });
+
+            elements.restartButton.addEventListener('click', restartRound);
+            elements.resetButton.addEventListener('click', resetGame);
+            
+            // Inicializar UI
+            updateScoreboard();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
