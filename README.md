@@ -48,9 +48,6 @@ Esta carpeta contiene notebooks introductorios de Python y conceptos básicos ne
 - Bucles_Clausula_for_.ipynb
 - Inteligencia_Artificial_Condicionales_.ipynb
 01_Introduccion_IA/README.md
-Nuevo
-+8
--0
 
 # Módulo 01: Introducción a la Inteligencia Artificial
 
@@ -70,10 +67,6 @@ Ejemplos de algoritmos supervisados con un estudio de caso usando el dataset del
 ## Notebooks
 
 - Análisis_de_supervivencia_Caso_Titanic.ipynb
-03_Deep_Learning/README.md
-Nuevo
-+7
--0
 
 # Módulo 03: Deep Learning
 
@@ -95,7 +88,7 @@ Gracias por la captura. El problema es que los caracteres como `├──`, `│
 
 Aquí te lo ajusto para que se vea perfecto:
 
-```markdown
+
 #  Ecosistema de Aprendizaje
 
 Este repositorio contiene la estructura base para organizar materiales, proyectos y recursos en torno al aprendizaje de ciencia de datos, machine learning y deep learning.
