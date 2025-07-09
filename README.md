@@ -82,13 +82,6 @@ Aquí tienes tu estructura adaptada a formato Markdown, lista para usar en tu re
 
 Este repositorio contiene la estructura base para organizar materiales, proyectos y recursos en torno al aprendizaje de ciencia de datos, machine learning y deep learning.
 
-## 📁 Estructura del repositorio
-
-Gracias por la captura. El problema es que los caracteres como `├──`, `│`, `└──` no se renderizan bien si no están dentro de un bloque de código. Para que se vean correctamente en GitHub, debes envolver la estructura del árbol en un bloque de código triple con \`\`\`.
-
-Aquí te lo ajusto para que se vea perfecto:
-
-
 #  Ecosistema de Aprendizaje
 
 Este repositorio contiene la estructura base para organizar materiales, proyectos y recursos en torno al aprendizaje de ciencia de datos, machine learning y deep learning.
