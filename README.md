@@ -82,21 +82,47 @@ Contiene un ejemplo introductorio a redes neuronales recurrentes.
 ## Notebooks
 
 
-Este ecosistema de aprendizaje incluye:
-├── ... (carpetas para cada módulo: 02_Machine_Learning, 03_Deep_Learning, etc.)
-├── Proyectos_Integradores/
-│   ├── Proyecto_Nombre_1/
-│   └── ...
-├── datasets_globales/
-├── assets/                         # Imágenes, diagramas, GIFs
-├── utils/                          # Scripts y funciones auxiliares
-├── requirements.txt
-├── environment.yml                 # (Opcional) Para Conda
-├── .gitignore
-├── LICENSE
-└── README.md                       # Este archivo
+Aquí tienes tu estructura adaptada a formato Markdown, lista para usar en tu repositorio de GitHub:
+
+```markdown
+#  Ecosistema de Aprendizaje
+
+Este repositorio contiene la estructura base para organizar materiales, proyectos y recursos en torno al aprendizaje de ciencia de datos, machine learning y deep learning.
+
+## 📁 Estructura del repositorio
+
 ```
 
+├── 02\_Machine\_Learning/
+├── 03\_Deep\_Learning/
+├── Proyectos\_Integradores/
+│   ├── Proyecto\_Nombre\_1/
+│   └── ...
+├── datasets\_globales/
+├── assets/              # Imágenes, diagramas, GIFs
+├── utils/               # Scripts y funciones auxiliares
+├── requirements.txt
+├── environment.yml      # (Opcional) Para Conda
+├── .gitignore
+├── LICENSE
+└── README.md            # Este archivo
+
+```
+
+## Descripción de carpetas y archivos
+
+- **02_Machine_Learning/** y **03_Deep_Learning/**: Módulos temáticos con notebooks, ejemplos y ejercicios.
+- **Proyectos_Integradores/**: Proyectos aplicados que integran conceptos aprendidos.
+- **datasets_globales/**: Conjunto de datos comunes para uso en múltiples módulos.
+- **assets/**: Recursos visuales como imágenes, diagramas o GIFs.
+- **utils/**: Scripts y funciones reutilizables para tareas comunes.
+- **requirements.txt**: Lista de dependencias para entorno Python.
+- **environment.yml**: Alternativa para entorno Conda.
+- **.gitignore**: Archivos y carpetas a excluir del control de versiones.
+- **LICENSE**: Licencia del repositorio.
+- **README.md**: Documento principal con la descripción del proyecto.
+
+---
 
 ## **Uso del Repositorio**  
 
