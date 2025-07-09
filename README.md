@@ -97,26 +97,6 @@ Este ecosistema de aprendizaje incluye:
 └── README.md                       # Este archivo
 ```
 
-## **Ejemplos Visuales**
-
-### **Evolución de una Red Neuronal en IA**
-
-Esta animación ilustra la construcción progresiva de una Red Neuronal Artificial, mostrando cómo se añaden nodos y conexiones capa por capa, representando el crecimiento y la complejidad inherentes a los modelos de Inteligencia Artificial.
-
-![Animación de la Evolución de una Red Neuronal Artificial](https://github.com/sgevatschnaider/IA-Teoria-Practica-Aplicaciones-/blob/895f1c99f0c5b872b42be5460920eb29e509ed21/neural_evolution_optimized.gif?raw=true)
-![Animación de la Evolución de una Red Neuronal Artificial](https://github.com/sgevatschnaider/IA-Teoria-Practica-Aplicaciones-/blob/main/neural_evolution_optimized.gif?raw=true)
-
-## **Puesta en Marcha: Guía de Inicio Rápido**
-
-1.  **Clonar:** `git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git && cd TU_REPOSITORIO`
-2.  **Entorno Virtual (Recomendado):**
-    *   `venv`: `python -m venv .venv && source .venv/bin/activate` (Linux/macOS) o `.venv\Scripts\activate` (Windows)
-    *   `conda`: `conda env create -f environment.yml && conda activate nombre_entorno` (si se provee `environment.yml`)
-3.  **Instalar Dependencias:** `pip install -r requirements.txt`
-4.  **Iniciar Jupyter:** `jupyter lab` o `jupyter notebook`
-5.  **Google Colab:** Busca los badges [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](URL_NOTEBOOK) en las secciones de cada módulo.
-
----
 
 ## **Uso del Repositorio**  
 
