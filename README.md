@@ -91,6 +91,17 @@ Este repositorio contiene la estructura base para organizar materiales, proyecto
 
 ## 📁 Estructura del repositorio
 
+Gracias por la captura. El problema es que los caracteres como `├──`, `│`, `└──` no se renderizan bien si no están dentro de un bloque de código. Para que se vean correctamente en GitHub, debes envolver la estructura del árbol en un bloque de código triple con \`\`\`.
+
+Aquí te lo ajusto para que se vea perfecto:
+
+```markdown
+#  Ecosistema de Aprendizaje
+
+Este repositorio contiene la estructura base para organizar materiales, proyectos y recursos en torno al aprendizaje de ciencia de datos, machine learning y deep learning.
+
+## 📁 Estructura del repositorio
+
 ```
 
 ├── 02\_Machine\_Learning/
@@ -109,7 +120,7 @@ Este repositorio contiene la estructura base para organizar materiales, proyecto
 
 ```
 
-## Descripción de carpetas y archivos
+## 📄 Descripción de carpetas y archivos
 
 - **02_Machine_Learning/** y **03_Deep_Learning/**: Módulos temáticos con notebooks, ejemplos y ejercicios.
 - **Proyectos_Integradores/**: Proyectos aplicados que integran conceptos aprendidos.
@@ -121,8 +132,7 @@ Este repositorio contiene la estructura base para organizar materiales, proyecto
 - **.gitignore**: Archivos y carpetas a excluir del control de versiones.
 - **LICENSE**: Licencia del repositorio.
 - **README.md**: Documento principal con la descripción del proyecto.
-
----
+```
 
 ## **Uso del Repositorio**  
 
