@@ -96,11 +96,6 @@ Este ecosistema de aprendizaje incluye:
 ├── LICENSE
 └── README.md                       # Este archivo
 ```
-Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a sus recursos.
-
----
-
----
 
 ## **Ejemplos Visuales**
 
