@@ -25,29 +25,70 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 ---
 
-## **Visión Holística del Repositorio**
+# Módulo 00: Fundamentos y Herramientas
 
-Este ecosistema de aprendizaje incluye:
+Esta carpeta contiene notebooks introductorios de Python y conceptos básicos necesarios para seguir los módulos posteriores.
 
-*   **Notebooks Interactivos (Jupyter/Colab):** Explicaciones teóricas rigurosas y código práctico en Python con librerías clave (Scikit-learn, TensorFlow, PyTorch, Hugging Face, etc.).
-*   **Conjuntos de Datos Curados (Datasets):** Para experimentación y validación.
-*   **Módulos de Código Reutilizables:** Funciones auxiliares para agilizar el desarrollo.
-*   **Proyectos Desafiantes:** Casos de estudio para aplicar tus conocimientos.
-*   **Guías de Profundización:** Enlaces a investigaciones seminales y documentación.
+## Notebooks
 
----
+- INTRODUCCION_A_PYTHON_.ipynb
+- Estructura_de_datos_Lista_.ipynb
+- Estructura_de_datos_diccionario.ipynb
+- Estructura_de_datos_set_.ipynb
+- Estructura_de_datos_tupla.ipynb
+- Estructura_de_datos_y_casino_aleatorio_ipynb.ipynb
+- Estructura_de_datos_y_memoria_en_python.ipynb
+- Introducción_a_funciones_en_python.ipynb
+- ARGS_Y_KWARGS.ipynb
+- DECORADORES_ipynb.ipynb
+- Funciones_recursivas_Definición,_sintaxis_ecosistema_ipynb.ipynb
+- Funciones_recursivas_Comparación_while_y_for_.ipynb
+- Ejemplos_modularización.ipynb
+- Modularización.ipynb
+- Bucles_Clausula_for_.ipynb
+- Inteligencia_Artificial_Condicionales_.ipynb
+01_Introduccion_IA/README.md
+Nuevo
++8
+-0
 
-## **Arquitectura del Repositorio**
+# Módulo 01: Introducción a la Inteligencia Artificial
 
-```
-.
-├── 00_Fundamentos_Herramientas/
-│   ├── notebooks/
-│   ├── datasets_ejemplos/
-│   └── README_Modulo.md
-├── 01_Introduccion_IA/
-│   ├── notebooks/
-│   └── README_Modulo.md
+En este módulo se presentan los principios básicos de la IA y los modelos de lenguaje.
+
+## Notebooks
+
+- Clase_I_Fundamentos_de_Inteligencia_Artificial.ipynb
+- Clase_II_Conceptos_LLM.ipynb
+02_Machine_Learning/README.md
+Nuevo
++7
+-0
+
+# Módulo 02: Machine Learning
+
+Ejemplos de algoritmos supervisados con un estudio de caso usando el dataset del Titanic.
+
+## Notebooks
+
+- Análisis_de_supervivencia_Caso_Titanic.ipynb
+03_Deep_Learning/README.md
+Nuevo
++7
+-0
+
+# Módulo 03: Deep Learning
+
+Contiene un ejemplo introductorio a redes neuronales recurrentes.
+
+## Notebooks
+
+- Redes_Neuronales_Recurrentes_(RNN).ipynb
+README.md
++19
+-19
+
+@@ -51,158 +51,158 @@ Este ecosistema de aprendizaje incluye:
 ├── ... (carpetas para cada módulo: 02_Machine_Learning, 03_Deep_Learning, etc.)
 ├── Proyectos_Integradores/
 │   ├── Proyecto_Nombre_1/
@@ -66,6 +107,44 @@ Cada `README_Modulo.md` contendrá objetivos específicos y enlaces directos a s
 ---
 
 ---
+
+## **Ejemplos Visuales**
+
+### **Evolución de una Red Neuronal en IA**
+
+Esta animación ilustra la construcción progresiva de una Red Neuronal Artificial, mostrando cómo se añaden nodos y conexiones capa por capa, representando el crecimiento y la complejidad inherentes a los modelos de Inteligencia Artificial.
+
+![Animación de la Evolución de una Red Neuronal Artificial](https://github.com/sgevatschnaider/IA-Teoria-Practica-Aplicaciones-/blob/895f1c99f0c5b872b42be5460920eb29e509ed21/neural_evolution_optimized.gif?raw=true)
+![Animación de la Evolución de una Red Neuronal Artificial](https://github.com/sgevatschnaider/IA-Teoria-Practica-Aplicaciones-/blob/main/neural_evolution_optimized.gif?raw=true)
+
+## **Puesta en Marcha: Guía de Inicio Rápido**
+
+1.  **Clonar:** `git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git && cd TU_REPOSITORIO`
+2.  **Entorno Virtual (Recomendado):**
+    *   `venv`: `python -m venv .venv && source .venv/bin/activate` (Linux/macOS) o `.venv\Scripts\activate` (Windows)
+    *   `conda`: `conda env create -f environment.yml && conda activate nombre_entorno` (si se provee `environment.yml`)
+3.  **Instalar Dependencias:** `pip install -r requirements.txt`
+4.  **Iniciar Jupyter:** `jupyter lab` o `jupyter notebook`
+5.  **Google Colab:** Busca los badges [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](URL_NOTEBOOK) en las secciones de cada módulo.
+
+---
+
+## **Uso del Repositorio**  
+
+Para clonar el repositorio y ejecutar los notebooks:  
+
+```bash
+git clone https://github.com/sgevatschnaider/Grafos.git
+cd Grafos
+jupyter notebook
+```
+
+
+Abre el notebook de tu interés y ejecuta los ejemplos interactivos.  
+
+# Notebooks Interactivos  
+Puedes abrir y ejecutar los notebooks en Google Colab directamente desde aquí:  
+
 
 ## **Ejemplos Visuales**
 
