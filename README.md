@@ -74,10 +74,6 @@ Contiene un ejemplo introductorio a redes neuronales recurrentes.
 
 ## Notebooks
 
-
-Aquí tienes tu estructura adaptada a formato Markdown, lista para usar en tu repositorio de GitHub:
-
-```markdown
 #  Ecosistema de Aprendizaje
 
 Este repositorio contiene la estructura base para organizar materiales, proyectos y recursos en torno al aprendizaje de ciencia de datos, machine learning y deep learning.
@@ -89,7 +85,6 @@ Este repositorio contiene la estructura base para organizar materiales, proyecto
 ## 📁 Estructura del repositorio
 
 ```
-
 ├── 02\_Machine\_Learning/
 ├── 03\_Deep\_Learning/
 ├── Proyectos\_Integradores/
@@ -103,7 +98,6 @@ Este repositorio contiene la estructura base para organizar materiales, proyecto
 ├── .gitignore
 ├── LICENSE
 └── README.md            # Este archivo
-
 ```
 
 ## 📄 Descripción de carpetas y archivos
