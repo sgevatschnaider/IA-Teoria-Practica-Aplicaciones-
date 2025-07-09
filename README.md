@@ -61,9 +61,7 @@ En este módulo se presentan los principios básicos de la IA y los modelos de l
 - Clase_I_Fundamentos_de_Inteligencia_Artificial.ipynb
 - Clase_II_Conceptos_LLM.ipynb
 02_Machine_Learning/README.md
-Nuevo
-+7
--0
+
 
 # Módulo 02: Machine Learning
 
@@ -83,12 +81,8 @@ Contiene un ejemplo introductorio a redes neuronales recurrentes.
 
 ## Notebooks
 
-- Redes_Neuronales_Recurrentes_(RNN).ipynb
-README.md
-+19
--19
 
-@@ -51,158 +51,158 @@ Este ecosistema de aprendizaje incluye:
+Este ecosistema de aprendizaje incluye:
 ├── ... (carpetas para cada módulo: 02_Machine_Learning, 03_Deep_Learning, etc.)
 ├── Proyectos_Integradores/
 │   ├── Proyecto_Nombre_1/
