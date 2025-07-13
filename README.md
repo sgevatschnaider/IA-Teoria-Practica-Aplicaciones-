@@ -268,7 +268,7 @@ Esta sección agrupa notebooks diseñados para enseñar y reforzar conceptos cla
 
 ***
 
-### Aprendizaje Interactivo: Proyectos y Librerías en Python
+🖼️ Proyectos Interactivos y Aplicaciones Gráficas en Python
 
 | 📄 Recurso | 📥 Acceso |
 | :--- | :--- |
