@@ -29,26 +29,46 @@ Explorarás el vasto universo de la IA, incluyendo: **Aprendizaje Automático**,
 
 Esta carpeta contiene notebooks introductorios de Python y conceptos básicos necesarios para seguir los módulos posteriores.
 
+¡Excelente! He combinado la información nueva con la estructura que me proporcionaste.
+
+Aquí tienes el listado completo y organizado:
+
+***
+
+# Módulo 00: Fundamentos y Herramientas
+
+Esta carpeta contiene notebooks introductorios de Python y conceptos básicos necesarios para seguir los módulos posteriores.
+
 ## Notebooks
 
-- INTRODUCCION_A_PYTHON_.ipynb
-- Estructura_de_datos_Lista_.ipynb
-- Estructura_de_datos_diccionario.ipynb
-- Estructura_de_datos_set_.ipynb
-- Estructura_de_datos_tupla.ipynb
-- Estructura_de_datos_y_casino_aleatorio_ipynb.ipynb
-- Estructura_de_datos_y_memoria_en_python.ipynb
-- Introducción_a_funciones_en_python.ipynb
-- ARGS_Y_KWARGS.ipynb
-- DECORADORES_ipynb.ipynb
-- Funciones_recursivas_Definición,_sintaxis_ecosistema_ipynb.ipynb
-- Funciones_recursivas_Comparación_while_y_for_.ipynb
-- Ejemplos_modularización.ipynb
-- Modularización.ipynb
-- Bucles_Clausula_for_.ipynb
-- Inteligencia_Artificial_Condicionales_.ipynb
-01_Introduccion_IA/README.md
+- `INTRODUCCION_A_PYTHON_.ipynb`
+- `Inteligencia_Artificial_Condicionales_.ipynb`
+- `Estructura_de_datos_Lista_.ipynb`
+- `Estructura_de_datos_diccionario.ipynb`
+- `Estructura_de_datos_set_.ipynb`
+- `Estructura_de_datos_tupla.ipynb`
+- `Estructura_de_datos_y_casino_aleatorio_ipynb.ipynb`
+- `Estructura_de_datos_y_memoria_en_python.ipynb`
+- `Bucles_Clausula_for_.ipynb`
+- `Introducción_a_funciones_en_python.ipynb`
+- `ARGS_Y_KWARGS.ipynb`
+- `DECORADORES_ipynb.ipynb`
+- `Funciones_recursivas_Definición,_sintaxis_ecosistema_ipynb.ipynb`
+- `Funciones_recursivas_Comparación_while_y_for_.ipynb`
+- `Modularización.ipynb`
+- `Ejemplos_modularización.ipynb`
+- `EJEMPLO_INTRODUCCIÓN.py`
+- `DB_escuelas.py`
+- `DB_escuelas_IG.py`
+- `mandelbrot.py`
+- `stock_market.py`
+- `01_Introduccion_IA/README.md`
 
+## Recursos
+
+- `tkinter_introduccion.html`
+- `librerias.html`
+- 
 # Módulo 01: Introducción a la Inteligencia Artificial
 
 En este módulo se presentan los principios básicos de la IA y los modelos de lenguaje.
@@ -245,10 +265,6 @@ Esta sección agrupa notebooks diseñados para enseñar y reforzar conceptos cla
 | **Notebook: Argumentos Flexibles: `*args` y `**kwargs`** <br><br> <details><summary><strong>Resumen:</strong> <em>(haz clic para expandir/colapsar)</em></summary><p>Este notebook explora cómo crear funciones más flexibles y dinámicas en Python mediante el uso de <code>*args</code> y <code>**kwargs</code>. Esta es una técnica esencial para escribir código genérico y reutilizable. <br><br> <h4>Conceptos Clave:</h4><ul><li><strong><code>*args</code> (Argumentos Posicionales Variables):</strong> Aprenderás a usar <code>*args</code> para permitir que una función acepte cualquier número de argumentos posicionales. Estos se empaquetan automáticamente en una <strong>tupla</strong>.</li><li><strong><code>**kwargs</code> (Argumentos de Palabra Clave Variables):</strong> Descubrirás cómo <code>**kwargs</code> permite pasar un número variable de argumentos de palabra clave (nombrados). Estos se agrupan en un <strong>diccionario</strong>.</li><li><strong>Casos de Uso:</strong> Se explica por qué son fundamentales para escribir decoradores, funciones de orden superior y para entender el funcionamiento interno de muchos frameworks y librerías de Python.</li></ul></p></details> | [![Ver en GitHub](https://img.shields.io/badge/Ver%20en-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/sgevatschnaider/IA-Teoria-Practica/blob/8eeda453a5924a462971bd1300c314c47dca4c5b/notebooks/ARGS_Y_KWARGS.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sgevatschnaider/IA-Teoria-Practica/blob/main/notebooks/ARGS_Y_KWARGS.ipynb) |
 | **Notebook: Programación Funcional: Decoradores** <br><br> <details><summary><strong>Resumen:</strong> <em>(haz clic para expandir/colapsar)</em></summary><p>Este notebook desmitifica el concepto de decoradores, una poderosa característica de la programación funcional en Python que permite extender o modificar el comportamiento de las funciones sin alterar su código fuente. <br><br> <h4>Puntos Destacados:</h4><ul><li><strong>Funciones como Ciudadanos de Primera Clase:</strong> Se repasa el concepto de que en Python las funciones pueden ser pasadas como argumentos y devueltas por otras funciones.</li><li><strong>Creación de un Decorador:</strong> Se muestra, paso a paso, cómo construir un decorador desde cero. Un decorador es, en esencia, una función que toma otra función, le añade funcionalidad y devuelve una nueva función.</li><li><strong>Sintaxis <code>@</code>:</strong> Se explica el uso del "azúcar sintáctico" <code>@</code> para aplicar decoradores de una manera limpia y legible.</li><li><strong>Casos de Uso Prácticos:</strong> Se ejemplifica cómo los decoradores se usan para tareas como medir el tiempo de ejecución de una función, verificar permisos, logging, etc.</li></ul></p></details> | [![Ver en GitHub](https://img.shields.io/badge/Ver%20en-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/sgevatschnaider/IA-Teoria-Practica/blob/27c9ecc734d2cfdc23909773df30f61a26b32a92/notebooks/DECORADORES_ipynb.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sgevatschnaider/IA-Teoria-Practica/blob/main/notebooks/DECORADORES_ipynb.ipynb) |
 | **Notebooks: Funciones Recursivas (Teoría y Práctica)** <br><br> <details><summary><strong>Resumen:</strong> <em>(haz clic para expandir/colapsar)</em></summary><p>Esta sección, compuesta por dos notebooks, profundiza en el concepto de la recursividad, una técnica de programación donde una función se llama a sí misma para resolver un problema. <br><br> <h4>Contenido:</h4><ul><li><strong>Parte 1 (Definición y Sintaxis):</strong> El primer notebook introduce la teoría fundamental de la recursividad.<ul><li>Qué es una función recursiva.</li><li>La importancia crítica del <strong>"caso base"</strong> para evitar bucles infinitos.</li><li>La lógica del <strong>"caso recursivo"</strong> que acerca la solución al caso base.</li><li>Ejemplos clásicos como el cálculo del factorial.</li></ul></li><li><strong>Parte 2 (Comparación con Bucles):</strong> El segundo notebook realiza una comparación directa entre soluciones recursivas y soluciones iterativas (usando bucles <code>while</code> y <code>for</code>).<ul><li>Analiza las ventajas y desventajas de cada enfoque.</li><li>Compara la legibilidad y simplicidad del código recursivo frente a la eficiencia (uso de memoria y riesgo de <em>stack overflow</em>).</li></ul></li></ul></p></details> | **Parte 1: Definición y Sintaxis** <br> [![Ver en GitHub](https://img.shields.io/badge/Ver%20en-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/sgevatschnaider/IA-Teoria-Practica/blob/8d5ef5ddceb5f4cfddd5a62689866702b74493bf/notebooks/Funciones_recursivas_Definici%C3%B3n%2C_sintaxis_ecosistema_ipynb.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sgevatschnaider/IA-Teoria-Practica/blob/main/notebooks/Funciones_recursivas_Definici%C3%B3n%2C_sintaxis_ecosistema_ipynb.ipynb) <br><br> **Parte 2: Comparación con Bucles** <br> [![Ver en GitHub](https://img.shields.io/badge/Ver%20en-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/sgevatschnaider/IA-Teoria-Practica/blob/8d5ef5ddceb5f4cfddd5a62689866702b74493bf/notebooks/Funciones_recursivas_Comparaci%C3%B3n_while_y_for_.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sgevatschnaider/IA-Teoria-Practica/blob/main/notebooks/Funciones_recursivas_Comparaci%C3%B3n_while_y_for_.ipynb) |
-
-Claro, he analizado los nuevos enlaces de los archivos Python y HTML. A continuación, presento la tabla actualizada con los resúmenes y los enlaces correspondientes, manteniendo el formato original.
-
-He agrupado los recursos por temática para una mejor organización.
 
 ***
 
