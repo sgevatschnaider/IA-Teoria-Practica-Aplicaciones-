@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introducción a Tkinter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: linear-gradient(135deg, #007991 0%, #78ffd6 100%);
+      --bg-secondary: rgba(255, 255, 255, 0.85);
+      --bg-tertiary: rgba(248, 250, 252, 0.8);
+      --text-primary: #2c3e50;
+      --text-secondary: #34495e;
+      --text-light: #ffffff;
+      --accent-primary: #007991;
+      --accent-secondary: #22c5a2;
+      --accent-gradient: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      --border-color: rgba(226, 232, 240, 0.8);
+      --shadow-card: 0 15px 35px rgba(0, 0, 0, 0.08);
+      --border-radius: 20px;
+      --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    [data-theme="dark"] {
+      --bg-primary: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      --bg-secondary: rgba(26, 32, 44, 0.85);
+      --bg-tertiary: rgba(45, 55, 72, 0.7);
+      --text-primary: #f7fafc;
+      --text-secondary: #a0aec0;
+      --accent-primary: #1dd1a1;
+      --accent-secondary: #48dbfb;
+      --border-color: rgba(255, 255, 255, 0.15);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; line-height: 1.8; background: var(--bg-primary); color: var(--text-primary); transition: var(--transition); min-height: 100vh; position: relative; overflow-x: hidden; }
+    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+    .particle { position: absolute; border-radius: 50%; animation: float 25s infinite linear; opacity: 0; background: rgba(255, 255, 255, 0.6);}
+    @keyframes float { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10%, 90% { opacity: 0.6; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; z-index: 1; }
+    .header { text-align: center; margin-bottom: 3rem; position: relative; }
+    .main-title { font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; }
+    .subtitle { font-size: 1.4rem; color: var(--text-light); font-weight: 400; opacity: 0.95; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); max-width: 900px; margin: auto; }
+
+    .theme-toggle { position: fixed; top: 2rem; right: 2rem; width: 60px; height: 60px; border: 1px solid var(--border-color); border-radius: 50%; background: var(--bg-secondary); backdrop-filter: blur(15px); box-shadow: var(--shadow-card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--accent-primary); transition: var(--transition); z-index: 1000; }
+    .theme-toggle:hover { transform: scale(1.15) rotate(180deg); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12), 0 0 30px rgba(102, 126, 234, 0.3); }
+
+    .lesson-container { display: flex; flex-direction: column; gap: 1.5rem; }
+    .topic-card { background: var(--bg-secondary); backdrop-filter: blur(20px); border-radius: var(--border-radius); box-shadow: var(--shadow-card); border: 2px solid var(--border-color); overflow: hidden; transition: var(--transition); }
+    .topic-header { cursor: pointer; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    .topic-title { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); }
+    .expand-icon { font-size: 1.2rem; color: var(--text-secondary); transition: var(--transition); }
+    .topic-card.open .expand-icon { transform: rotate(180deg); }
+    .topic-content { max-height: 0; overflow: hidden; transition: max-height 1.2s ease, padding 1.2s ease; background: var(--bg-tertiary); }
+    .topic-card.open .topic-content { max-height: 2500px; padding: 1.5rem 2rem; border-top: 1px solid var(--border-color); }
+    .topic-content p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .topic-content ul { padding-left: 20px; }
+    .topic-content li { margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.7; }
+    .topic-content strong { color: var(--text-primary); font-weight: 600; }
+    .topic-content em { font-style: italic; color: var(--accent-primary); }
+
+    /* --- ESTILO PARA LA ETIQUETA <code> --- */
+    .topic-content code {
+      background-color: rgba(0, 121, 145, 0.1); /* Color sutil basado en el acento */
+      color: var(--accent-primary);
+      padding: 0.2em 0.4em;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+    [data-theme="dark"] .topic-content code {
+      background-color: rgba(72, 219, 251, 0.15);
+      color: var(--accent-secondary);
+    }
+
+    footer {
+      text-align: center; margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+    footer p { color: var(--text-secondary); font-size: 0.9rem; opacity: 0.8; }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="particles" id="particles-container"></div>
+  <div class="theme-toggle" id="themeToggleButton" title="Cambiar tema"><i class="fas fa-moon" id="theme-icon"></i></div>
+  <div class="container">
+    <header class="header">
+      <h1 class="main-title">Introducción a Tkinter</h1>
+      <p class="subtitle">Desarrollo de Interfaces Gráficas con Python.</p>
+    </header>
+
+    <div class="lesson-container">
+        <!-- El contenido que antes se generaba con Python, ahora está aquí directamente -->
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">1. ¿Qué es Tkinter?</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>
+        Tkinter es el módulo estándar de Python para la creación de <strong>interfaces gráficas de usuario (GUI)</strong>.
+        Su nombre proviene de "Tk Interface", ya que actúa como un enlace entre Python y la biblioteca gráfica Tcl/Tk,
+        una tecnología ampliamente utilizada que viene <strong>incluida por defecto en la mayoría de las distribuciones de Python</strong>.
+        Es ideal para desarrollar aplicaciones de escritorio ligeras, prototipos interactivos o herramientas internas
+        que requieran una interfaz gráfica sin complicaciones.
+        </p>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">2. Ventanas y Control de Layout</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>El punto de partida es una <strong>ventana principal</strong> (<code>Tk</code>), desde donde se pueden generar nuevas ventanas (<code>Toplevel</code>) o diálogos. Para posicionar elementos, Tkinter ofrece tres <strong>gestores de geometría</strong>:</p><ul><li><code>pack()</code>: Organiza los widgets en bloques horizontales o verticales.</li><li><code>grid()</code>: Permite posicionarlos en forma de tabla, usando filas y columnas.</li><li><code>place()</code>: Ubica los elementos con coordenadas absolutas.</li></ul>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">3. Widgets: Los Componentes Visuales</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>Los <strong>widgets</strong> son los bloques fundamentales de cualquier GUI. Tkinter ofrece una colección rica y variada:</p><ul><li><strong>Label:</strong> Muestra texto o imágenes estáticas.</li><li><strong>Button:</strong> Permite ejecutar acciones al hacer clic.</li><li><strong>Entry:</strong> Un campo de texto de una sola línea, ideal para formularios.</li><li><strong>Text:</strong> Área de texto multilínea.</li><li><strong>Listbox:</strong> Listas de elementos seleccionables.</li><li><strong>Checkbutton y Radiobutton:</strong> Opciones de selección múltiple o única.</li><li><strong>Combobox (con ttk):</strong> Cajas desplegables combinadas con entrada.</li><li><strong>Scrollbar:</strong> Barras de desplazamiento para listas o textos largos.</li><li><strong>Menu y MenuButton:</strong> Para construir menús desplegables.</li></ul>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">4. Gestión de Eventos</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>
+        El <strong>modelo de eventos</strong> de Tkinter permite reaccionar a interacciones del usuario (clics, teclas, etc.).
+        Esto se realiza mediante el método <code>bind()</code>, que conecta un evento a una función específica.
+        Por ejemplo, podemos programar que al presionar "Enter" en un campo de texto, se envíe un formulario.
+        Esta <strong>programación dirigida por eventos</strong> es lo que da vida a las aplicaciones gráficas.
+        </p>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">5. Canvas: Gráficos Personalizados</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>El widget <code>Canvas</code> es una herramienta versátil que permite <strong>dibujar formas, insertar imágenes, crear animaciones o diseñar interfaces personalizadas</strong>. Es esencial cuando queremos escapar de los widgets predefinidos.</p><ul><li>Líneas, óvalos, rectángulos y polígonos.</li><li>Texto en posiciones específicas.</li><li>Imágenes bitmap o PNG.</li></ul>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">6. Soporte de Imágenes y Multiplataforma</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>Aunque Tkinter tiene soporte básico para imágenes con <code>PhotoImage</code>, se suele combinar con la biblioteca <code>Pillow</code> (PIL) para ampliar la compatibilidad con formatos como JPEG, PNG, etc.</p><ul><li><strong>Multiplataforma:</strong> Una de las grandes ventajas de Tkinter es que las aplicaciones funcionan prácticamente igual en Windows, macOS y Linux sin modificar el código.</li></ul>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">7. Enfoque Orientado a Objetos (OOP)</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>
+        Aunque puede usarse de forma procedural, Tkinter se adapta perfectamente a un enfoque <strong>orientado a objetos (OOP)</strong>.
+        Podemos encapsular cada componente de la interfaz dentro de clases (por ejemplo, una ventana como subclase de <code>tk.Frame</code>),
+        lo que favorece el mantenimiento, la reutilización y la escalabilidad del código.
+        </p>
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-title">8. Conclusión</span>
+                <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="topic-content">
+                <p>
+        Tkinter sigue siendo una opción muy valiosa para crear aplicaciones gráficas de forma rápida, ligera y multiplataforma.
+        Aunque existen alternativas más modernas, Tkinter destaca por su <strong>simplicidad, integración nativa y curva de aprendizaje amigable</strong>,
+        siendo una excelente puerta de entrada al desarrollo de GUI en Python.
+        </p>
+            </div>
+        </div>
+        
+    </div>
+
+    <footer>
+      <p>Material elaborado por Prof. Sergio Gevatschnaider </p>
+    </footer>
+
+  </div>
+
+  <script>
+    (function() {
+        const themeToggleButton = document.getElementById('themeToggleButton');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlEl = document.documentElement;
+
+        function setTheme(theme) {
+            htmlEl.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            if (themeIcon) {
+                themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+
+        themeToggleButton.addEventListener('click', () => {
+            const currentTheme = htmlEl.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+
+        document.querySelectorAll('.topic-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('open');
+            });
+        });
+
+        const container = document.getElementById('particles-container');
+        if (container) {
+            const count = 30;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.width = (Math.random() * 5 + 2) + 'px';
+                p.style.height = p.style.width;
+                p.style.animationDelay = Math.random() * -20 + 's';
+                p.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(p);
+            }
+        }
+        const firstTopic = document.querySelector('.topic-card');
+        if(firstTopic) firstTopic.classList.add('open');
+    })();
+  </script>
+</body>
+</html>
